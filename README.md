@@ -66,8 +66,8 @@ elmo-hikes/
 
 
 ## Contributors
+- **Shelly Vasudeva** - BCIT CST Student with a interest in cybersecurity.
 - **Yan Yan** - BCIT CST Student interested in computers, love playing games.
-
 ---
 
 
