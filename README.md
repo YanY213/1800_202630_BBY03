@@ -69,8 +69,6 @@ elmo-hikes/
 - James O'Neill - BCIT CST Student with a passion for programming.
 
 - **Teammate Name** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
-- **Yan Yan** - BCIT CST Student interested in computers, love playing games.
-
 
 - **Shelly Vasudeva** - BCIT CST Student with a interest in cybersecurity.
 - **Yan Yan** - BCIT CST Student interested in computers, love playing games.
