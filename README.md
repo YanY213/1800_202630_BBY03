@@ -66,7 +66,6 @@ elmo-hikes/
 
 
 ## Contributors
-- **James O'Neill** - BCIT CST Student with a passion for programming.
 - **Shelly Vasudeva** - BCIT CST Student with a interest in cybersecurity.
 - **Yan Yan** - BCIT CST Student interested in computers, love playing games.
 ---
