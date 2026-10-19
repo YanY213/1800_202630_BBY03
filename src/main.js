@@ -12,6 +12,7 @@ function sayHello() {
 
 function updateNavbar() {
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  console.log("Switched to page:", currentPage);
 
   const navLinks = document.querySelectorAll(".navbar .nav-link");
 
