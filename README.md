@@ -1,8 +1,8 @@
-# Elmo Hikes
+# Time Hop
 
 ## Overview
 
-Elmo Hikes is a client-side JavaScript web application that helps users discover and explore hiking trails. The app displays a curated list of hike trails, each with details such as name, location, difficulty, and an image. Users can browse the list and mark their favorite trails for easy access later.
+Time Hop is a client-side JavaScript web application that allows users to store and revisit memories in the future. Users can create digital time capsules containing personal memories, photos, and messages, each with details such as a title, creation date, and unlock date. Users can browse their created capsules and track the time remaining until each one becomes available to open.
 
 Developed for the COMP 1800 course, this project applies User-Centred Design practices and agile project management, and demonstrates integration with Firebase backend services for storing user favorites.
 
@@ -10,9 +10,10 @@ Developed for the COMP 1800 course, this project applies User-Centred Design pra
 
 ## Features
 
-- Browse a list of curated hiking trails with images and details
-- Mark and unmark trails as favorites
-- View a personalized list of favorite hikes
+- Create digital time capsules containing photos, memories, and messages
+- Set unlock dates to determine when capsules can be opened
+- Browse a list of created capsules with titles and countdown timers
+- Manage and revisit saved memories once capsules are unlocked
 - Responsive design for desktop and mobile
 
 ---
@@ -37,16 +38,16 @@ To run the application locally:
 
 Once the application is running:
 
-1.  Browse the list of hiking trails displayed on the main page.
-2.  Click the heart icon (or similar) to mark a trail as a favorite.
-3.  View your favorite hikes in the favorites section.
+1.  Make your first time capsule on the create page.
+2.  Upload all the memories you want to the capsule.
+3.  Seal and lock away your capsule.
 
 ---
 
 ## Project Structure
 
 ```
-elmo-hikes/
+1800_202630_BBY03/
 ├── src/
 │   ├── main.js
 ├── styles/
@@ -70,7 +71,7 @@ elmo-hikes/
 
 ## Acknowledgments
 
-- Trail data and images are for demonstration purposes only.
+- Time capsule content and sample memories are for demonstration purposes only.
 - Code snippets were adapted from resources such as [Stack Overflow](https://stackoverflow.com/) and [MDN Web Docs](https://developer.mozilla.org/).
 - Icons sourced from [FontAwesome](https://fontawesome.com/) and images from [Unsplash](https://unsplash.com/).
 
@@ -80,13 +81,16 @@ elmo-hikes/
 
 ### Limitations
 
-- Limited trail details (e.g., no live trail conditions).
+- Limited customization options for individual time capsules.
+- No ability to share capsules with other users.
 - Accessibility features can be further improved.
 
 ### Future Work
 
-- Implement map view and trailhead directions.
-- Add filtering and sorting options (e.g., by difficulty, distance).
+- Implement the ability to share time capsules with friends and family.
+- Add more customization options for capsule themes and layouts.
+- Allow users to attach additional media, such as videos and audio recordings.
+- Implement notifications for upcoming capsule unlock dates.
 - Create a dark mode for better usability in low-light conditions.
 
 ---
