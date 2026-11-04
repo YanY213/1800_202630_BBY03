@@ -1,4 +1,3 @@
-<!-- A Basic Skeleton for any newly created pages, !!REMOVE THIS COMMENT AFTER PASTING!! -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -33,59 +32,58 @@
     <!-- Stuff for body goes here -->
 
     <!-- Main content goes here -->
-     
-<!-- Page Title -->
-<div class="container mt-5">
-    <h1 class="text-center mb-3">Locked Time Capsules</h1>
-    <p class="text-center text-muted mb-4">
+
+    <!-- Page Title -->
+    <div class="container mt-5">
+      <h1 class="text-center mb-3">Locked Time Capsules</h1>
+      <p class="text-center text-muted mb-4">
         Your locked time capsules are displayed below.
-    </p>
+      </p>
 
-<!-- Locked Time Capsule List -->
-<div id="locked-capsule-list">
+      <!-- Locked Time Capsule List -->
+      <div id="locked-capsule-list">
+        <!-- First Capsule -->
+        <!-- First Capsule -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h3 class="card-title">My First Time Capsule</h3>
+            <p class="card-text">Status: Locked</p>
 
-    <!-- First Capsule -->
-<!-- First Capsule -->
-<div class="card mb-3">
-    <div class="card-body">
-        <h3 class="card-title">My First Time Capsule</h3>
-        <p class="card-text">Status: Locked</p>
+            <button type="button" class="btn btn-secondary" disabled>
+              Open Capsule
+            </button>
 
-        <button type="button" class="btn btn-secondary" disabled>
-            Open Capsule
-        </button>
+            <button type="button" class="btn btn-danger delete-btn">
+              Delete
+            </button>
+          </div>
+        </div>
 
-        <button type="button" class="btn btn-danger delete-btn">
-            Delete
-        </button>
+        <!-- Second Capsule -->
+        <!-- Second Capsule -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h3 class="card-title">My Second Time Capsule</h3>
+            <p class="card-text">Status: Locked</p>
+
+            <button type="button" class="btn btn-secondary" disabled>
+              Open Capsule
+            </button>
+
+            <button type="button" class="btn btn-danger delete-btn">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty Message -->
+      <div id="empty-message" hidden>
+        <h3>No Time Capsules Yet</h3>
+        <p>Your locked time capsules will appear here.</p>
+      </div>
     </div>
-</div>
-
-    <!-- Second Capsule -->
-   <!-- Second Capsule -->
-<div class="card mb-3">
-    <div class="card-body">
-        <h3 class="card-title">My Second Time Capsule</h3>
-        <p class="card-text">Status: Locked</p>
-
-        <button type="button" class="btn btn-secondary" disabled>
-            Open Capsule
-        </button>
-
-        <button type="button" class="btn btn-danger delete-btn">
-            Delete
-        </button>
-    </div>
-</div>
-
-</div>
-
-<!-- Empty Message -->
-<div id="empty-message" hidden>
-    <h3>No Time Capsules Yet</h3>
-    <p>Your locked time capsules will appear here.</p>
-</div>
-</div> <!-- Closes Bootstrap container -->
+    <!-- Closes Bootstrap container -->
 
     <!---------------------------------------------->
     <!-- Your own JavaScript functions go here    -->
