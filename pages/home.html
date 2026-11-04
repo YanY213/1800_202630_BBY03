@@ -33,11 +33,37 @@
 
     <site-navbar></site-navbar>
     <!-- Main content goes here -->
-    <p>Home</p>
+    <div class="container py-4">
+      <!-- Homepage Title -->
+      <h1>My Time Capsules</h1>
+      <p>Explore your saved memories!</p>
 
-    <!---------------------------------------------->
-    <!-- Your own JavaScript functions go here    -->
-    <!---------------------------------------------->
-    <!-- Link to scripts of your own -->
+      <!-- Search Bar -->
+      <input
+        type="search"
+        class="form-control"
+        id="searchbar"
+        placeholder="Search your time capsules..."
+      />
+
+      <!-- Time Capsule Cards -->
+      <div id="capsule-list">
+        <!-- Time capsule cards will appear here -->
+
+        <!-- Empty List Message -->
+        <div class="card mt-4">
+          <div class="card-body">
+            <h3 class="card-title">No Time Capsules Yet</h3>
+            <p class="text-muted">Your saved time capsules will appear here.</p>
+          </div>
+        </div>
+      </div>
+
+      <!---------------------------------------------->
+      <!-- Your own JavaScript functions go here    -->
+      <!---------------------------------------------->
+      <!-- Link to scripts of your own -->
+      <script type="module" src="/src/scripts/home.js"></script>
+    </div>
   </body>
 </html>
