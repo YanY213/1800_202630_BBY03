@@ -33,11 +33,82 @@
 
     <site-navbar></site-navbar>
     <!-- Main content goes here -->
-    <p>Create</p>
+    <div class="overflow-scroll" style="margin-bottom: 100px">
+      <div class="container py-4">
+        <h1>Create</h1>
+        <p>Make your Time Capsule here.</p>
+
+        <!-- Title Input -->
+        <form id="createCapsuleForm" novalidate>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label"
+              >Enter a Title:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="titleInput"
+              placeholder="My Time Capsule"
+              required
+            />
+          </div>
+
+          <!-- Message Input -->
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"
+              >Write a Message:</label
+            >
+            <textarea
+              class="form-control"
+              id="messageInput"
+              rows="5"
+            ></textarea>
+          </div>
+
+          <!-- File Selection -->
+          <div class="mb-3">
+            <label for="formFile" class="form-label">Add Files:</label>
+            <input class="form-control" type="file" id="formFile" />
+          </div>
+
+          <!-- Select Date -->
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label"
+              >Opening Date:</label
+            >
+            <input type="date" class="form-control" id="openingDateInput" />
+          </div>
+
+          <!-- Hide Capsule Button -->
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label"
+              >Hide Time Capsule: <i class="bi bi-question-circle"></i>
+            </label>
+
+            <div>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="hideCapsuleCheckBox"
+              />
+              <label class="form-check-label" for="checkDefault">
+                Hidden
+              </label>
+            </div>
+          </div>
+
+          <!-- Create Button -->
+          <div class="d-flex flex-column align-items-center">
+            <button type="submit" class="btn btn-primary w-25">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!---------------------------------------------->
     <!-- Your own JavaScript functions go here    -->
     <!---------------------------------------------->
     <!-- Link to scripts of your own -->
+    <script type="module" src="/src/create.js"></script>
   </body>
 </html>
