@@ -33,6 +33,15 @@ function initUI() {
     }
   });
 
+  // --- Initialize Bootstrap Tooltips ---
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]'
+  );
+
+  tooltipTriggerList.forEach(function (element) {
+      new bootstrap.Tooltip(element);
+    });
+
   // --- DOM Elements ---
   const createCapsuleForm = document.getElementById("createCapsuleForm");
 
