@@ -39,8 +39,8 @@ function initUI() {
   );
 
   tooltipTriggerList.forEach(function (element) {
-      new bootstrap.Tooltip(element);
-    });
+    new bootstrap.Tooltip(element);
+  });
 
   // --- DOM Elements ---
   const createCapsuleForm = document.getElementById("createCapsuleForm");
