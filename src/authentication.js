@@ -6,6 +6,9 @@
 // (login, signup, logout, and auth state checks).
 // -------------------------------------------------------------
 
+import { db } from "/src/firebaseConfig.js";
+import { doc, setDoc } from "firebase/firestore";
+
 // Import the initialized Firebase Authentication object
 import { auth } from "/src/firebaseConfig.js";
 
@@ -56,8 +59,24 @@ export async function signupUser(name, email, password) {
     email,
     password,
   );
-  await updateProfile(userCredential.user, { displayName: name });
-  return userCredential.user;
+  const user = userCredential.user;
+
+  await updateProfile(user, { displayName: name });
+
+  try {
+    // Create a Firestore document for the new user with default values
+    await setDoc(doc(db, "users", user.uid), {
+      name: name,
+      email: email,
+    });
+    console.log("Firestore user document created successfully!");
+  } catch (error) {
+    alert(
+      `Error creating user document:\n${error.code || ""}\n${error.message || error}`,
+    );
+  }
+
+  return user;
 }
 
 // -------------------------------------------------------------
