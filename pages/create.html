@@ -49,7 +49,6 @@
               class="form-control"
               id="titleInput"
               placeholder="My Time Capsule"
-              required
             />
           </div>
 
@@ -62,13 +61,19 @@
               class="form-control"
               id="messageInput"
               rows="5"
+              style="resize: none; width: 100%;"
             ></textarea>
           </div>
 
           <!-- File Selection -->
           <div class="mb-3">
             <label for="formFile" class="form-label">Add Files:</label>
-            <input class="form-control" type="file" id="formFile" />
+            <input
+              class="form-control"
+              type="file"
+              id="fileInput"
+              accept="image/*"
+            />
           </div>
 
           <!-- Select Date -->
@@ -82,7 +87,13 @@
           <!-- Hide Capsule Button -->
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label"
-              >Hide Time Capsule: <i class="bi bi-question-circle"></i>
+              >Hide Time Capsule: 
+              <i 
+                class="bi bi-question-circle"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Checking this means your time capsule won't be visible, even within your collection, until its unlock time has passed."
+              ></i>
             </label>
 
             <div>
