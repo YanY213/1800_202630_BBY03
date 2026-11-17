@@ -44,79 +44,134 @@
             <h3 class="card-title">Account</h3>
             <p class="text-muted">Manage your personal information.</p>
 
-            <div class="mb-3">
-              <label for="displayName" class="form-label"> Display Name </label>
-              <input
-                type="text"
-                class="form-control"
-                id="displayName"
-                placeholder="Enter your name"
-              />
-            </div>
+            <!-- Alert Box -->
+            <div
+              id="profileAlert"
+              class="alert alert-success d-none"
+              role="alert"
+            ></div>
 
-            <div class="mb-3">
-              <label for="email" class="form-label"> Email Address </label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                placeholder="Enter your email"
-              />
-            </div>
+            <form id="profileForm" novalidate>
+              <!-- Display Name -->
+              <div class="mb-3">
+                <label for="nameInput" class="form-label">Name</label>
+                <input
+                  type="text"
+                  id="nameInput"
+                  class="form-control"
+                  disabled
+                />
+              </div>
 
-            <button type="button" class="btn btn-primary">Save Changes</button>
+              <!-- About Me -->
+              <div class="mb-3">
+                <label for="bioInput" class="form-label">About me</label>
+                <textarea
+                  id="bioInput"
+                  class="form-control"
+                  rows="3"
+                  disabled
+                ></textarea>
+              </div>
+
+              <button
+                type="button"
+                id="editBtn"
+                class="btn btn-outline-secondary"
+              >
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
+
+              <button
+                type="submit"
+                id="saveBtn"
+                class="btn btn-primary"
+                disabled
+              >
+                <i class="bi bi-check-lg me-1"></i>Save Changes
+              </button>
+            </form>
           </div>
         </div>
-      </div>
 
-      <div class="container mb-100">
-        <!-- Password Settings -->
         <hr class="my-4" />
 
-        <h4>Password Settings</h4>
-        <p class="text-muted">Manage your account password.</p>
+        <!-- Password Section -->
+        <div class="card mt-4">
+          <div class="card-body">
+            <h3 class="card-title">Password</h3>
+            <p class="text-muted">Manage your account password.</p>
 
-        <!-- Change Password -->
+            <!-- Alert Box -->
+            <div
+              id="passwordAlert"
+              class="alert alert-success d-none"
+              role="alert"
+            ></div>
 
-        <div class="mb-3">
-          <label for="currentPassword" class="form-label">
-            Current Password
-          </label>
-          <input
-            type="password"
-            class="form-control"
-            id="currentPassword"
-            placeholder="Enter current password"
-          />
-        </div>
+            <form id="passwordForm" novalidate>
+              <!-- Current Password -->
+              <div class="mb-3">
+                <label for="currentPasswordInput" class="form-label"
+                  >Current Password</label
+                >
+                <input
+                  type="password"
+                  id="currentPasswordInput"
+                  class="form-control"
+                  disabled
+                />
+              </div>
 
-        <div class="mb-3">
-          <label for="newPassword" class="form-label"> New Password </label>
-          <input
-            type="password"
-            class="form-control"
-            id="newPassword"
-            placeholder="Enter new password"
-          />
-        </div>
+              <!-- New Password -->
+              <div class="mb-3">
+                <label for="newPasswordInput" class="form-label"
+                  >New Password</label
+                >
+                <input
+                  type="password"
+                  id="newPasswordInput"
+                  class="form-control"
+                  disabled
+                />
+              </div>
 
-        <div class="mb-3">
-          <label for="confirmPassword" class="form-label">
-            Confirm New Password
-          </label>
-          <input
-            type="password"
-            class="form-control"
-            id="confirmPassword"
-            placeholder="Confirm new password"
-          />
-        </div>
+              <!-- Confirm New Password -->
+              <div class="mb-3">
+                <label for="confirmPasswordInput" class="form-label">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  id="confirmPasswordInput"
+                  class="form-control"
+                  disabled
+                />
+              </div>
 
-        <button type="button" class="btn btn-primary">Change Password</button>
+              <button
+                type="button"
+                id="editBtnPassword"
+                class="btn btn-outline-secondary"
+              >
+                <i class="bi bi-pencil me-1"></i>Edit
+              </button>
 
-        <!-- Forgot Password -->
-        <div class="mt-3">
-          <a href="#" class="text-decoration-none"> Forgot Password? </a>
+              <button
+                type="submit"
+                id="saveBtnPassword"
+                class="btn btn-primary"
+                disabled
+              >
+                <i class="bi bi-check-lg me-1"></i>Change Password
+              </button>
+            </form>
+
+            <!-- Forgot Password -->
+            <div class="mt-3">
+              <a href="#" class="text-decoration-none"> Forgot Password? </a>
+            </div>
+          </div>
         </div>
       </div>
 
