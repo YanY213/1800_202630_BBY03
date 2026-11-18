@@ -7,13 +7,32 @@ import {
     onSnapshot,
     doc,
     deleteDoc
-} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js"
+} from "firebase/firestore"
+
+
 
 function initUI() {
   onAuthReady(function (user) {
     if (!user) {
       location.href = "/index.html"; // Not logged in → back to start
+      return;
     }
+
+    const capsuleRef = collection(
+      db,
+      "users",
+      user.uid,
+      "timeCapsules"
+    );
+
+    // Listen for changes
+    onSnapshot(capsuleRef, (snapshot) => {
+
+      console.log(snapshot);
+
+    });
+
+
   });
 }
 
