@@ -124,10 +124,11 @@ function displayCapsules(snapshot) {
               >
 
                     <div class="d-flex align-items-center gap-3 mb-3">
-
-                        <div class="border border-dark rounded p-3">
-                            <i class="bi ${isLocked ? "bi-lock-fill" : "bi-unlock-fill"} fs-2"></i>
+                        
+                        <div class="border border-dark rounded d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                            <i class="bi ${isLocked ? 'bi-lock-fill' : 'bi-unlock-fill'} fs-2"></i>
                         </div>
+
 
                         <div>
                             <h4 class="fw-bold mb-0">
