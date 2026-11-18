@@ -42,68 +42,73 @@
     <div id="capsule-list">
       <!-- Time capsule cards will appear here -->
 
-      <!-- Locked Capsule Card -->
-      <div class="card bg-light mb-3 capsuleCard">
+      <!-- Reference: Original Locked Capsule Card -->
+      <template id="locked-capsule-reference">
 
-        <div class="card-body">
+          <!-- Locked Capsule Card -->
+          <div class="card bg-light mb-3 capsuleCard">
 
-          <!-- Clickable Capsule Content -->
-          <div
-            role="button"
-            tabindex="0"
-            data-bs-toggle="modal"
-            data-bs-target="#lockedModal"
-          >
+              <div class="card-body">
 
-            <div class="d-flex align-items-center gap-3 mb-3">
+                  <!-- Clickable Capsule Content -->
+                  <div
+                      role="button"
+                      tabindex="0"
+                      data-bs-toggle="modal"
+                      data-bs-target="#lockedModal"
+                  >
 
-              <!-- Lock Icon -->
-              <div class="border border-dark rounded p-3">
-                <i class="bi bi-lock-fill fs-2"></i>
+                      <div class="d-flex align-items-center gap-3 mb-3">
+
+                          <!-- Lock Icon -->
+                          <div class="border border-dark rounded p-3">
+                              <i class="bi bi-lock-fill fs-2"></i>
+                          </div>
+
+                          <!-- Capsule Information -->
+                          <div>
+                              <h4 class="fw-bold mb-0">Road Trip</h4>
+                              <small class="fw-bold">18 memories inside</small>
+                          </div>
+
+                      </div>
+
+                      <!-- Countdown Box -->
+                      <div class="border border-dark rounded p-3">
+
+                          <h5 class="fw-bold mb-0">Opens in</h5>
+
+                          <p class="fw-bold mb-2">24 Days 6 Hours</p>
+
+                          <!-- Progress Bar -->
+                          <div class="progress mb-2">
+                              <div
+                                  class="progress-bar bg-secondary"
+                                  style="width: 70%"
+                              ></div>
+                          </div>
+
+                          <small class="fw-bold">
+                              Created Aug 12 • Opens Nov 14
+                          </small>
+
+                      </div>
+
+                  </div>
+                  <!-- End Clickable Capsule Content -->
+
+                  <!-- Delete Capsule Button -->
+                  <button
+                      type="button"
+                      class="btn btn-danger mt-3 delete-btn"
+                  >
+                      <i class="bi bi-trash"></i> Delete
+                  </button>
+
               </div>
-
-              <!-- Capsule Information -->
-              <div>
-                <h4 class="fw-bold mb-0">Road Trip</h4>
-                <small class="fw-bold">18 memories inside</small>
-              </div>
-
-            </div>
-
-            <!-- Countdown Box -->
-            <div class="border border-dark rounded p-3">
-
-              <h5 class="fw-bold mb-0">Opens in</h5>
-
-              <p class="fw-bold mb-2">24 Days 6 Hours</p>
-
-              <!-- Progress Bar -->
-              <div class="progress mb-2">
-                <div
-                  class="progress-bar bg-secondary"
-                  style="width: 70%"
-                ></div>
-              </div>
-
-              <small class="fw-bold">
-                Created Aug 12 • Opens Nov 14
-              </small>
-
-            </div>
-
           </div>
-          <!-- End Clickable Capsule Content -->
 
-          <!-- Delete Capsule Button -->
-          <button
-            type="button"
-            class="btn btn-danger mt-3 delete-btn"
-          >
-            <i class="bi bi-trash"></i> Delete
-          </button>
-
-        </div>
-      </div>
+      </template>
 
     </div>
     <!-- End Capsule List -->
