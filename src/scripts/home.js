@@ -9,7 +9,8 @@ import {
     deleteDoc
 } from "firebase/firestore"
 
-let capsuleList = document.getElementById("capsule-list");
+const capsuleList = document.getElementById("capsule-list");
+const emptyMessage = document.getElementById("empty-message");
 
 function initUI() {
   onAuthReady(function (user) {
@@ -40,11 +41,21 @@ function displayCapsules(snapshot) {
 
   capsuleList.replaceChildren();
 
-  snapshot.forEach((capsuleDoc) => {
+  const visableCapsules = snapshot.docs.filter(
+    capsuleDoc => capsuleDoc.data().hidden !== true
+  );
+
+  emptyMessage.hidden = visableCapsules.length !== 0;
+
+  visableCapsules.forEach((capsuleDoc) => {
 
     const capsule = capsuleDoc.data();
 
     console.log(capsule);
+
+    if (capsule.hidden === true) {
+      return;
+    }
   })
 }
 
