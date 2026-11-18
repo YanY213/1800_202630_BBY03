@@ -10,6 +10,7 @@ import {
     Timestamp
 } from "firebase/firestore"
 
+let currentUserId = null;
 const capsuleList = document.getElementById("capsule-list");
 const emptyMessage = document.getElementById("empty-message");
 
@@ -20,10 +21,12 @@ function initUI() {
       return;
     }
 
+    currentUserId = user.uid
+
     const capsuleRef = collection(
       db,
       "users",
-      user.uid,
+      currentUserId,
       "timeCapsules"
     );
 
@@ -59,7 +62,7 @@ function displayCapsules(snapshot) {
     const message = capsule.message;
     const openingDate = capsule.openingDate.toDate();
     const title = capsule.title;
-    const capsuleId = capsule.id;
+    const capsuleId = capsuleDoc.id;
 
     const currentDate = new Date();
 
@@ -179,7 +182,49 @@ function displayCapsules(snapshot) {
   })
 }
 
+capsuleList.addEventListener("click", async (event) => {
 
+    const deleteButton = event.target.closest(".delete-btn");
+
+    if (!deleteButton) {
+        return;
+    }
+    if (!currentUserId) {
+      alert("You must be logged in to delete a capsule.");
+      return;
+    }
+
+    event.stopPropagation();
+
+    const capsuleId = deleteButton.dataset.capsuleId;
+
+    if (!confirm("Are you sure you want to delete this time capsule?")) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(
+                db,
+                "users",
+                currentUserId,
+                "timeCapsules",
+                capsuleId
+            )
+        );
+
+        console.log("Capsule successfully deleted!");
+
+    } catch (error) {
+
+        console.error("Error deleting capsule:", error);
+
+        alert("Could not delete the time capsule.");
+
+    }
+
+});
 
 // --- Initialize UI on DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", initUI);
