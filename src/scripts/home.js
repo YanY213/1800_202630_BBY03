@@ -9,7 +9,7 @@ import {
     deleteDoc
 } from "firebase/firestore"
 
-
+let capsuleList = document.getElementById("capsule-list");
 
 function initUI() {
   onAuthReady(function (user) {
@@ -28,12 +28,24 @@ function initUI() {
     // Listen for changes
     onSnapshot(capsuleRef, (snapshot) => {
 
-      console.log(snapshot);
+      displayCapsules(snapshot);
 
     });
 
 
   });
+}
+
+function displayCapsules(snapshot) {
+
+  capsuleList.replaceChildren();
+
+  snapshot.forEach((capsuleDoc) => {
+
+    const capsule = capsuleDoc.data();
+
+    console.log(capsule);
+  })
 }
 
 
