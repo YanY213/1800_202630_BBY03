@@ -6,7 +6,8 @@ import {
     collection,
     onSnapshot,
     doc,
-    deleteDoc
+    deleteDoc,
+    Timestamp
 } from "firebase/firestore"
 
 const capsuleList = document.getElementById("capsule-list");
@@ -49,11 +50,42 @@ function displayCapsules(snapshot) {
 
   visableCapsules.forEach((capsuleDoc) => {
 
+    // Capsule Info Variables
     const capsule = capsuleDoc.data();
 
-    console.log(capsule);
+    const createdAt = capsule.createdAt.toDate();
+    const fileRef = capsule.fileRef;
+    const hidden = capsule.hidden;
+    const message = capsule.message;
+    const openingDate = capsule.openingDate.toDate();
+    const title = capsule.title;
 
-    if (capsule.hidden === true) {
+    const currentDate = new Date();
+
+    const createdAtShort = createdAt.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+    const openingDateShort = openingDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+
+    const isLocked = openingDate > currentDate;
+
+
+    // Capsule Info Log
+    console.log("Current Capsule: " + capsule
+      + "\n\tCreated At: " + createdAtShort
+      + "\n\tFile Reference: " + fileRef
+      + "\n\tHidden: " + hidden
+      + "\n\tMessage: " + message
+      + "\n\tOpening Date: " + openingDateShort
+      + "\n\tTitle: " + title
+      + "\n\tIs Locked: " + isLocked
+    );
+
+    if (hidden === true) {
       return;
     }
   })
