@@ -2,6 +2,7 @@ import { db } from "../firebaseConfig.js";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 import { onAuthReady } from "../authentication.js";
+import * as bootstrap from "bootstrap";
 
 // Shrink a photo so its longest side is at most maxSize px,
 // then return it as a base64 text string ("data:image/jpeg;base64,....")
