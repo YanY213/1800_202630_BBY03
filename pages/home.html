@@ -119,54 +119,5 @@
   <script type="module" src="/src/scripts/home.js"></script>
   <script type="module" src="/src/main.js"></script>
 
-  <!-- Keyboard and Delete Button Support -->
-  <script>
-    const capsuleCard = document.querySelector(
-      "[data-bs-target='#lockedModal']"
-    );
-
-    // Open locked popup using Enter or Space
-    if (capsuleCard) {
-      capsuleCard.addEventListener("keydown", function (event) {
-        if (event.target !== capsuleCard) {
-          return;
-        }
-
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          capsuleCard.click();
-        }
-      });
-    }
-
-    // Delete capsule from homepage
-    const deleteButton = document.querySelector(".delete-btn");
-
-    if (deleteButton) {
-      deleteButton.addEventListener("click", function (event) {
-        event.stopPropagation();
-
-        // Find the capsule card and remove it
-        const capsule = deleteButton.closest(".capsuleCard");
-
-        if (capsule) {
-          capsule.remove();
-        }
-
-        // Show empty message if no capsules remain
-        const capsuleList = document.querySelector("#capsule-list");
-        const emptyMessage = document.querySelector("#empty-message");
-
-        if (
-          capsuleList &&
-          emptyMessage &&
-          !capsuleList.querySelector(".capsuleCard")
-        ) {
-          emptyMessage.hidden = false;
-        }
-      });
-    }
-  </script>
-
 </body>
 </html>
