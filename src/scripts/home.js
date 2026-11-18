@@ -301,5 +301,30 @@ capsuleList.addEventListener("click", function (event) {
 
 });
 
+
+// ---------------------------------------------------------
+// Keyboard Support for Capsule Popup
+// ---------------------------------------------------------
+
+capsuleList.addEventListener("keydown", function (event) {
+
+    // Find the capsule that was pressed
+    const capsuleContent = event.target.closest(".capsule-content");
+
+    if (!capsuleContent) {
+        return;
+    }
+
+    // Open popup using Enter or Space
+    if (event.key === "Enter" || event.key === " ") {
+
+        event.preventDefault();
+
+        capsuleContent.click();
+
+    }
+
+});
+
 // --- Initialize UI on DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", initUI);
