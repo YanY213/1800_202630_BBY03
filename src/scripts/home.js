@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore"
 
 let currentUserId = null;
+let lastClickedCapsule = null;
 const capsuleList = document.getElementById("capsule-list");
 const emptyMessage = document.getElementById("empty-message");
 
@@ -228,9 +229,7 @@ capsuleList.addEventListener("click", async (event) => {
 
 });
 
-// ---------------------------------------------------------
 // Open the locked capsule popup
-// ---------------------------------------------------------
 
 capsuleList.addEventListener("click", function (event) {
 
@@ -241,6 +240,9 @@ capsuleList.addEventListener("click", function (event) {
     if (!capsuleContent) {
         return;
     }
+
+    // Remember which capsule opened the popup
+    lastClickedCapsule = capsuleContent;
 
     // Retrieve capsule information from its data attributes
     const title = capsuleContent.dataset.capsuleTitle;
@@ -294,6 +296,7 @@ capsuleList.addEventListener("click", function (event) {
 
     // Display the Bootstrap modal
     const modalElement = document.getElementById("lockedModal");
+    modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
 
     const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
 
@@ -302,9 +305,7 @@ capsuleList.addEventListener("click", function (event) {
 });
 
 
-// ---------------------------------------------------------
-// Keyboard Support for Capsule Popup
-// ---------------------------------------------------------
+// Keyboard support for capsule popup
 
 capsuleList.addEventListener("keydown", function (event) {
 
@@ -325,6 +326,28 @@ capsuleList.addEventListener("keydown", function (event) {
     }
 
 });
+
+// Restore focus after closing the modal
+
+const modalElement = document.getElementById("lockedModal");
+
+// Remove focus from the modal's Close button before it is hidden
+modalElement.addEventListener("hide.bs.modal", function () {
+
+    if (modalElement.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+});
+
+// Return focus to the capsule after the modal has finished closing
+modalElement.addEventListener("hidden.bs.modal", function () {
+
+    if (lastClickedCapsule && lastClickedCapsule.isConnected) {
+        lastClickedCapsule.focus();
+    }
+
+});
+
 
 // --- Initialize UI on DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", initUI);
