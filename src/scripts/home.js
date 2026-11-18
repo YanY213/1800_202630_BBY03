@@ -1,6 +1,7 @@
 import { onAuthReady } from "../authentication.js";
 
 import { db } from "../firebaseConfig.js"
+import * as bootstrap from "bootstrap";
 
 import { 
     collection,
@@ -112,13 +113,14 @@ function displayCapsules(snapshot) {
             <div class="card-body">
 
                 <div
-                    role="button"
-                    tabindex="0"
-                    class="capsule-content"
-                    data-bs-toggle="modal"
-                    data-bs-target="#lockedModal"
-                    data-capsule-id="${capsuleId}"
-                >
+                  role="button"
+                  tabindex="0"
+                  class="capsule-content"
+                  data-capsule-id="${capsuleId}"
+                  data-capsule-title="${title}"
+                  data-opening-date="${openingDate}"
+                  data-is-locked="${isLocked}"
+              >
 
                     <div class="d-flex align-items-center gap-3 mb-3">
 
@@ -223,6 +225,79 @@ capsuleList.addEventListener("click", async (event) => {
         alert("Could not delete the time capsule.");
 
     }
+
+});
+
+// ---------------------------------------------------------
+// Open the locked capsule popup
+// ---------------------------------------------------------
+
+capsuleList.addEventListener("click", function (event) {
+
+    // Find the capsule that was clicked
+    const capsuleContent = event.target.closest(".capsule-content");
+
+    // If the click wasn't on a capsule, stop
+    if (!capsuleContent) {
+        return;
+    }
+
+    // Retrieve capsule information from its data attributes
+    const title = capsuleContent.dataset.capsuleTitle;
+    const openingDate = new Date(capsuleContent.dataset.openingDate);
+
+    // Check if capsule is still locked
+    const currentDate = new Date();
+    const isLocked = openingDate > currentDate;
+
+    // Find the popup elements
+    const modalTitle = document.getElementById("lockedModalLabel");
+    const modalIcon = document.getElementById("modal-lock-icon");
+    const modalStatus = document.getElementById("modal-status");
+    const modalMessage = document.getElementById("modal-message");
+    const modalOpeningDate = document.getElementById("modal-opening-date");
+
+    // Format opening date
+    const formattedDate = openingDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+
+    // Update popup title
+    modalTitle.textContent = title;
+
+    // Display locked or unlocked information
+    if (isLocked) {
+
+        modalIcon.className = "bi bi-lock-fill fs-1";
+
+        modalStatus.textContent = "This Capsule Is Locked";
+
+        modalMessage.textContent =
+            "Your memories will be available when this capsule unlocks.";
+
+        modalOpeningDate.textContent = "Opens " + formattedDate;
+
+    } else {
+
+        modalIcon.className = "bi bi-unlock-fill fs-1";
+
+        modalStatus.textContent = "This Capsule Is Unlocked!";
+
+        modalMessage.textContent =
+            "Your memories are now available. Open your capsule to explore them!";
+
+        modalOpeningDate.textContent = "Opened " + formattedDate;
+
+    }
+
+    // Display the Bootstrap modal
+    const modalElement = document.getElementById("lockedModal");
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+    modal.show();
 
 });
 
