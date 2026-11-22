@@ -11,41 +11,87 @@ import {
   updatePassword,
 } from "firebase/auth";
 
-// The fields we store in Firestore (email comes from Auth, not from here)
-const fields = ["name", "bio"];
+// The profileFields we store in Firestore (email comes from Auth, not from here)
+const profileFields = ["name", "bio"];
 const passwordFields = ["currentPassword", "newPassword", "confirmPassword"];
 let currentUser = null;
 
-onAuthReady(async function (user) {
+async function loadProfileFields(user) {
+  // 1. Read the document
+  const userDoc = await getDoc(doc(db, "users", user.uid));
+  const data = userDoc.data() || {};
+
+  // 2. Pre-populate each input (empty string if the field doesn't exist yet)
+  profileFields.forEach((field) => {
+    document.getElementById(field + "Input").value = data[field] || "";
+  });
+}
+
+onAuthReady(function (user) {
   if (!user) {
     location.href = "/index.html";
   } else {
     currentUser = user;
-
-    // 1. Read the document
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    const data = userDoc.data() || {};
-
-    // 2. Pre-populate each input (empty string if the field doesn't exist yet)
-    fields.forEach((field) => {
-      document.getElementById(field + "Input").value = data[field] || "";
-    });
+    loadProfileFields(user);
   }
 });
 
 // -- PROFILES --
 
+// Alert Message
+const profileAlertBox = document.getElementById("profileAlert");
+
+let profileAlertTimeout;
+
+function showProfileAlert(msg, type) {
+  profileAlertBox.textContent = msg || "";
+
+  profileAlertBox.classList.remove("alert-success", "alert-danger");
+  profileAlertBox.classList.add(type);
+
+  profileAlertBox.classList.remove("d-none");
+
+  clearTimeout(profileAlertTimeout);
+  profileAlertTimeout = setTimeout(hideProfileAlert, 5000); // Auto-hide after 5s
+}
+
+function hideProfileAlert() {
+  profileAlertBox.classList.add("d-none");
+  profileAlertBox.textContent = "";
+
+  clearTimeout(profileAlertTimeout);
+}
+
 // ---- (1) What to do when Edit is clicked ----
-function enableEdit() {
-  fields.forEach(
-    (field) => (document.getElementById(field + "Input").disabled = false),
+let isEditingProfile = false;
+
+function toggleProfileEdit() {
+  profileFields.forEach(
+    (field) =>
+      (document.getElementById(field + "Input").disabled = isEditingProfile),
   );
-  document.getElementById("saveBtn").disabled = false;
-  document.getElementById("nameInput").focus();
+
+  document.getElementById("saveBtnProfile").hidden = isEditingProfile;
+  document.getElementById("cancelBtnProfile").hidden = isEditingProfile;
+  document.getElementById("editBtnProfile").hidden = !isEditingProfile;
+
+  if (isEditingProfile) {
+    loadProfileFields(currentUser);
+  } else {
+    document.getElementById("nameInput").focus();
+  }
+
+  isEditingProfile = !isEditingProfile;
 }
 
 // ---- (2) Connect it to the button ----
-document.getElementById("editBtn").addEventListener("click", enableEdit);
+document
+  .getElementById("editBtnProfile")
+  .addEventListener("click", toggleProfileEdit);
+
+document
+  .getElementById("cancelBtnProfile")
+  .addEventListener("click", toggleProfileEdit);
 
 // ---- (1) What to do when the profile form is submitted ----
 async function saveProfile(event) {
@@ -53,26 +99,23 @@ async function saveProfile(event) {
 
   // Build an object from the inputs: { name: "...", country: "...", school: "...", bio: "..." }
   const updates = {};
-  fields.forEach((field) => {
+  profileFields.forEach((field) => {
     updates[field] = document.getElementById(field + "Input").value;
   });
 
   try {
+    document.getElementById("cancelBtnProfile").disabled = true;
+
     await updateDoc(doc(db, "users", currentUser.uid), updates);
-
-    // Lock the form again, refresh the header, show a confirmation
-    fields.forEach(
-      (field) => (document.getElementById(field + "Input").disabled = true),
-    );
-    document.getElementById("saveBtn").disabled = true;
-
-    const alertBox = document.getElementById("profileAlert");
-    alertBox.textContent = "Profile saved!";
-    alertBox.classList.remove("d-none");
+    showProfileAlert("Profile saved!", "alert-success");
   } catch (error) {
-    alert(
-      `Error saving profile:\n${error.code || ""}\n${error.message || error}`,
-    );
+    showProfileAlert(`Error! ${error.message || error}`, "alert-danger");
+    console.error("Error saving profile:", error.code, error.message);
+  } finally {
+    document.getElementById("cancelBtnProfile").disabled = false;
+
+    isEditingProfile = true;
+    toggleProfileEdit();
   }
 }
 
@@ -118,7 +161,11 @@ function togglePasswordEdit() {
   document.getElementById("cancelBtnPassword").hidden = isEditingPassword;
   document.getElementById("editBtnPassword").hidden = !isEditingPassword;
 
-  if (!isEditingPassword) {
+  if (isEditingPassword) {
+    passwordFields.forEach(
+      (field) => (document.getElementById(field + "Input").value = ""),
+    );
+  } else {
     document.getElementById("currentPasswordInput").focus();
   }
 
