@@ -151,6 +151,7 @@ function initUI() {
         openingDate,
         hidden,
         file: selectedFiles,
+        memoryCount: selectedFiles.length,
         createdAt: serverTimestamp(),
       });
 
