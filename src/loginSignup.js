@@ -31,6 +31,15 @@ function initAuthUI() {
     el.classList.toggle("d-none", !visible);
   }
 
+  // Check which section should be displayed when the page loads
+  if (window.location.hash === "#login") {
+    setVisible(signupView, false);
+    setVisible(loginView, true);
+  } else if (window.location.hash === "#signup") {
+    setVisible(loginView, false);
+    setVisible(signupView, true);
+  }
+
   // Show error message with accessibility and auto-hide
   let errorTimeout;
   function showError(msg) {
