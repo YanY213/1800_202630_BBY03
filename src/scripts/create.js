@@ -24,13 +24,71 @@ function resizeImage(file, maxSize = 600) {
 }
 
 let selectedFiles = [];
+let carouselCurrentIndex = 0;
 
 const fileInput = document.getElementById("fileInput");
 
+// Render carousel Image Preview
 function displayFiles() {
   console.log(selectedFiles);
+
+  const imagePreview = document.getElementById("imagePreview");
+  imagePreview.hidden = true;
+  carouselCurrentIndex = 0;
+
+  if (selectedFiles.length === 0) {
+    return;
+  }
+
+  const carouselIndicators = document.getElementById("carousel-indicators");
+  const carouselInner = document.getElementById("carousel-inner");
+
+  carouselIndicators.innerHTML = "";
+  carouselInner.innerHTML = "";
+
+  selectedFiles.forEach((file, i) => {
+    ((carouselIndicators.innerHTML =
+      carouselIndicators.innerHTML +
+      `
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="${i}"
+        class="${i === 0 ? "active" : ""}"
+        aria-current="true"
+        aria-label="Slide ${i + 1}"
+      ></button>
+      `),
+      (carouselInner.innerHTML =
+        carouselInner.innerHTML +
+        `
+      <div class="carousel-item ${i === 0 ? "active" : ""}">
+        <img
+          src="${file}"
+          class="d-block w-100 object-fit-contain"
+          alt="Image"
+        />
+      </div>
+      `));
+  });
+
+  imagePreview.hidden = false;
 }
 
+// Track current carousel index
+document
+  .getElementById("carouselExampleIndicators")
+  .addEventListener("slide.bs.carousel", (event) => {
+    carouselCurrentIndex = event.to ?? 0;
+  });
+
+// Remove file from list by the current index of the carousel
+function removeFile() {
+  selectedFiles.splice(carouselCurrentIndex, 1);
+  displayFiles();
+}
+
+// Add file to list
 async function addFiles(event) {
   const file = fileInput.files[0] ? await resizeImage(fileInput.files[0]) : "";
 
@@ -39,6 +97,7 @@ async function addFiles(event) {
 }
 
 fileInput.addEventListener("change", addFiles);
+document.getElementById("removeImgBtn").addEventListener("click", removeFile);
 
 function initUI() {
   let currentUser = null;
@@ -50,6 +109,8 @@ function initUI() {
       currentUser = user; // 1. Remember who's logged in
     }
   });
+
+  displayFiles();
 
   // --- Initialize Bootstrap Tooltips ---
   const tooltipTriggerList = document.querySelectorAll(
