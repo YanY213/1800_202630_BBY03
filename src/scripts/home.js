@@ -97,8 +97,13 @@ function displayCapsules(snapshot) {
         // Difference in milliseconds
         const diffMs = openingDate - currentDate;
 
-        const progress = diffMs > 0
-        ? Math.max(0, Math.min(100, (currentDate / openingDate) * 100))
+        // Calculate progress percentage
+        const totalDuration = openingDate - createdAt;
+        
+        const elapsedTime = currentDate - createdAt;
+
+        const progress = totalDuration > 0
+        ? Math.max(0, Math.min(100, (elapsedTime / totalDuration) * 100))
         : 100;
 
         // Convert milliseconds into days and hours
