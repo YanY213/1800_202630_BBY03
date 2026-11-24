@@ -13,8 +13,10 @@ import {
 
 let currentUserId = null;
 let lastClickedCapsule = null;
+const searchBar = document.getElementById("searchbar");
 const capsuleList = document.getElementById("capsule-list");
 const emptyMessage = document.getElementById("empty-message");
+
 
 function initUI() {
   onAuthReady(function (user) {
@@ -186,6 +188,28 @@ function displayCapsules(snapshot) {
   })
 }
 
+// Search capsules by title
+searchBar.addEventListener("input", function () {
+
+    const searchText = searchBar.value.toLowerCase().trim();
+
+    const capsuleCards = document.querySelectorAll(".capsuleCard");
+
+    capsuleCards.forEach((card) => {
+
+        const title = card.querySelector("h4").textContent.toLowerCase();
+
+        if (title.includes(searchText)) {
+            card.hidden = false;
+        } else {
+            card.hidden = true;
+        }
+
+    });
+
+});
+
+// Delete capsule
 capsuleList.addEventListener("click", async (event) => {
 
     const deleteButton = event.target.closest(".delete-btn");
