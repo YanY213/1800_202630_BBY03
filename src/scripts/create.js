@@ -23,6 +23,23 @@ function resizeImage(file, maxSize = 600) {
   });
 }
 
+let selectedFiles = [];
+
+const fileInput = document.getElementById("fileInput");
+
+function displayFiles() {
+  console.log(selectedFiles);
+}
+
+async function addFiles(event) {
+  const file = fileInput.files[0] ? await resizeImage(fileInput.files[0]) : "";
+
+  selectedFiles.push(file);
+  displayFiles();
+}
+
+fileInput.addEventListener("change", addFiles);
+
 function initUI() {
   let currentUser = null;
 
@@ -36,7 +53,7 @@ function initUI() {
 
   // --- Initialize Bootstrap Tooltips ---
   const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]'
+    '[data-bs-toggle="tooltip"]',
   );
 
   tooltipTriggerList.forEach(function (element) {
@@ -59,15 +76,11 @@ function initUI() {
 
       const titleInput = document.querySelector("#titleInput");
       const messageInput = document.querySelector("#messageInput");
-      const fileInput = document.querySelector("#fileInput");
       const openingDateInput = document.querySelector("#openingDateInput");
       const hiddenCheckBox = document.querySelector("#hiddenCheckBox");
 
       const title = titleInput?.value?.trim() ?? "";
       const message = messageInput?.value?.trim() ?? "";
-      const file = fileInput.files[0]
-        ? await resizeImage(fileInput.files[0])
-        : "";
       const openingDate = new Date(openingDateInput?.value) ?? serverTimestamp;
       const hidden = hiddenCheckBox?.checked ?? false;
 
@@ -76,7 +89,7 @@ function initUI() {
         message,
         openingDate,
         hidden,
-        file,
+        file: selectedFiles,
         createdAt: serverTimestamp(),
       });
 
