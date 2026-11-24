@@ -78,6 +78,7 @@ function displayCapsules(snapshot) {
         const message = capsule.message;
         const openingDate = capsule.openingDate.toDate();
         const title = capsule.title;
+        const memoryCount = capsule.memoryCount;
         const capsuleId = capsuleDoc.id;
 
         const currentDate = new Date();
@@ -133,8 +134,7 @@ function displayCapsules(snapshot) {
                                 </h4>
 
                                 <small class="fw-bold">
-                                <!-- TODO/ implement memory counter -->
-                                    -- Memories
+                                    ${memoryCount} Memories Inside
                                 </small>
                             </div>
 
