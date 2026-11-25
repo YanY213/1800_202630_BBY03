@@ -15,6 +15,9 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
+  <!-- Colors -->
+  <link rel="stylesheet" href="/styles/colors.css">
+
   <!-- Website FavIcon-->
   <link rel="icon" type="image/png" href="/images/favicon.png">
 
@@ -22,7 +25,7 @@
   <script type="module" src="/src/components/site-navbar.js"></script>
 </head>
 
-<body>
+<body class="bg-cream">
 
   <site-navbar></site-navbar>
 
@@ -30,8 +33,8 @@
   <div class="container pt-4 pb-5 mb-4">
 
     <!-- Homepage Title -->
-    <h1>My Time Capsules</h1>
-    <p>Explore your saved memories!</p>
+    <h1 class="text-dark-custom">My Time Capsules</h1>
+    <p class="text-brown">Explore your saved memories!</p>
 
     <!-- Search Bar -->
     <input
@@ -43,7 +46,7 @@
 
     <!-- Capsule Filter -->
     <div class="mb-3">
-      <label for="capsule-filter" class="form-label fw-bold">
+      <label for="capsule-filter" class="form-label fw-bold text-dark-custom">
         Show Capsules
       </label>
 
@@ -61,10 +64,10 @@
     <!-- End Capsule List -->
 
     <!-- Empty List Message -->
-    <div class="card mt-4" id="empty-message" hidden>
+    <div class="card mt-4 bg-white" id="empty-message" hidden>
       <div class="card-body">
-        <h3 class="card-title">No Visable Time Capsules Yet</h3>
-        <p class="text-muted">
+        <h3 class="card-title text-dark-custom">No Visable Time Capsules Yet</h3>
+        <p class="text-brown">
           Your saved time capsules will appear here.
         </p>
       </div>
