@@ -9,7 +9,9 @@
 
 /* Background colors */
 .bg-dark-custom {
-    background-color: var(--dark);
+    background-color: var(--dark) !important;
+    border-color: var(--dark) !important;
+    color: var(--cream) !important;
 }
 
 .bg-brown {
@@ -17,7 +19,7 @@
 }
 
 .bg-taupe {
-    background-color: var(--taupe);
+    background-color: var(--taupe) !important;
 }
 
 .bg-sand {
@@ -47,4 +49,8 @@
 
 .text-cream {
     color: var(--cream);
+}
+
+.border-sand {
+    border-color: var(--sand) !important;
 }

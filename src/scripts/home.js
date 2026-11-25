@@ -139,7 +139,7 @@ function displayCapsules(snapshot) {
         const hoursRemaining = totalHours % 24;
 
         const capsuleHTML = `
-            <div class="card bg-light mb-3 capsuleCard" style="cursor:pointer;">
+            <div class="card bg-white mb-3 capsuleCard border-sand" style="cursor:pointer;">
 
                 <div class="card-body">
 
@@ -155,43 +155,42 @@ function displayCapsules(snapshot) {
 
                         <div class="d-flex align-items-center gap-3 mb-3">
                             
-                            <div class="border border-dark rounded d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
-                                <i class="bi ${isLocked ? 'bi-lock-fill' : 'bi-unlock-fill'} fs-2"></i>
+                           <div class="bg-cream border border-sand rounded d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                                <i class="bi ${isLocked ? 'bi-lock-fill' : 'bi-unlock-fill'} fs-2 text-taupe"></i>
                             </div>
 
 
                             <div>
-                                <h4 class="fw-bold mb-0">
+                                <h4 class="fw-bold mb-0 text-dark-custom">
                                     ${title}
                                 </h4>
 
-                                <small class="fw-bold">
+                                <small class="fw-bold text-brown">
                                     ${memoryCount} Memories Inside
                                 </small>
                             </div>
 
                         </div>
 
-                        <div class="border border-dark rounded p-3">
+                        <div class="bg-white border border-sand rounded p-3">
 
-                            <h5 class="fw-bold mb-0">
+                            <h5 class="fw-bold mb-0 text-dark-custom">
                                 ${isLocked ? "Opens in" : "Available now"}
                             </h5>
 
-                            <p class="fw-bold mb-2">
+                            <p class="fw-bold mb-2 text-brown">
                                 ${isLocked
                                     ? `${daysRemaining} Days ${hoursRemaining} Hours`
                                     : "Your capsule is ready!"}
                             </p>
 
                             <div class="progress mb-2">
-                                <div
-                                    class="progress-bar bg-secondary"
+                                <div class="progress-bar bg-taupe"
                                     style="width: ${progress}%"
                                 ></div>
                             </div>
 
-                            <small class="fw-bold">
+                            <small class="fw-bold text-brown">
                                 Created ${createdAtShort} • Opens ${openingDateShort}
                             </small>
 
@@ -201,10 +200,10 @@ function displayCapsules(snapshot) {
 
                     <button
                         type="button"
-                        class="btn btn-danger mt-3 delete-btn"
+                        class="btn bg-dark-custom text-cream mt-3 delete-btn"
                         data-capsule-id="${capsuleId}"
                     >
-                        <i class="bi bi-trash"></i> Delete
+                        <i class="bi bi-trash text-cream"></i> Delete
                     </button>
 
                 </div>
