@@ -57,10 +57,17 @@ function displayCapsules(snapshot) {
     const selectedFilter = capsuleFilter.value;
     const currentDate = new Date();
 
-    // Remove hidden capsules
-    const visibleCapsules = snapshot.docs.filter(
-        capsuleDoc => capsuleDoc.data().hidden !== true
-    );
+    // Hide capsules only if they are hidden AND still locked
+    const visibleCapsules = snapshot.docs.filter(capsuleDoc => {
+
+        const capsule = capsuleDoc.data();
+
+        const openingDate = capsule.openingDate.toDate();
+
+        const isLocked = openingDate > currentDate;
+
+        return capsule.hidden !== true || !isLocked;
+    });
 
     // Apply search and locked/unlocked filters
     const filteredCapsules = visibleCapsules.filter(capsuleDoc => {
