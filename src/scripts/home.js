@@ -17,6 +17,7 @@ let latestSnapshot = null;
 const searchBar = document.getElementById("searchbar");
 const capsuleList = document.getElementById("capsule-list");
 const emptyMessage = document.getElementById("empty-message");
+const capsuleFilter = document.getElementById("capsule-filter");
 
 
 function initUI() {
@@ -53,17 +54,36 @@ function displayCapsules(snapshot) {
     capsuleList.replaceChildren();
 
     const searchText = searchBar.value.toLowerCase().trim();
-        
-    const visableCapsules = snapshot.docs.filter(
+    const selectedFilter = capsuleFilter.value;
+    const currentDate = new Date();
+
+    // Remove hidden capsules
+    const visibleCapsules = snapshot.docs.filter(
         capsuleDoc => capsuleDoc.data().hidden !== true
     );
 
-    const filteredCapsules = visableCapsules.filter(capsuleDoc => {
+    // Apply search and locked/unlocked filters
+    const filteredCapsules = visibleCapsules.filter(capsuleDoc => {
 
-        const title = capsuleDoc.data().title.toLowerCase();
+        const capsule = capsuleDoc.data();
 
-        return title.includes(searchText);
-    })
+        const title = capsule.title.toLowerCase();
+
+        const openingDate = capsule.openingDate.toDate();
+
+        const isLocked = openingDate > currentDate;
+
+        // Check if title matches search
+        const matchesSearch = title.includes(searchText);
+
+        // Check if capsule matches selected filter
+        const matchesFilter =
+            selectedFilter === "all" ||
+            (selectedFilter === "locked" && isLocked) ||
+            (selectedFilter === "unlocked" && !isLocked);
+
+        return matchesSearch && matchesFilter;
+    });
 
     emptyMessage.hidden = filteredCapsules.length !== 0;
 
@@ -112,7 +132,7 @@ function displayCapsules(snapshot) {
         const hoursRemaining = totalHours % 24;
 
         const capsuleHTML = `
-            <div class="card bg-light mb-3 capsuleCard">
+            <div class="card bg-light mb-3 capsuleCard" style="cursor:pointer;">
 
                 <div class="card-body">
 
@@ -197,6 +217,15 @@ searchBar.addEventListener("input", function () {
 
 });
 
+// Filter capsules by locked/unlocked status
+capsuleFilter.addEventListener("change", function () {
+
+    if (latestSnapshot) {
+        displayCapsules(latestSnapshot);
+    }
+
+});
+
 // Delete capsule button
 capsuleList.addEventListener("click", async (event) => {
 
@@ -205,12 +234,13 @@ capsuleList.addEventListener("click", async (event) => {
     if (!deleteButton) {
         return;
     }
+
+    event.stopPropagation();
+
     if (!currentUserId) {
       alert("You must be logged in to delete a capsule.");
       return;
     }
-
-    event.stopPropagation();
 
     const capsuleId = deleteButton.dataset.capsuleId;
 
@@ -245,8 +275,13 @@ capsuleList.addEventListener("click", async (event) => {
 // Open the locked capsule popup
 capsuleList.addEventListener("click", function (event) {
 
+    // Ignore clicks on the delete button
+    if (event.target.closest(".delete-btn")) {
+        return;
+    }
+
     // Find the capsule that was clicked
-    const capsuleContent = event.target.closest(".capsule-content");
+    const capsuleContent = event.target.closest(".card-body");
 
     // If the click wasn't on a capsule, stop
     if (!capsuleContent) {
