@@ -301,15 +301,15 @@ capsuleList.addEventListener("click", function (event) {
 
     modalOpeningDate.textContent = "Opens " + formattedDate;
 
-        // Display the Bootstrap modal
-        const modalElement = document.getElementById("lockedModal");
-        modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
+    // Display the Bootstrap modal
+    const modalElement = document.getElementById("lockedModal");
+    modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
 
-        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
 
-        modal.show();
+    modal.show();
 
-    });
+});
 
 
 // Keyboard support for capsule popup
