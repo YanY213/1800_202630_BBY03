@@ -243,7 +243,6 @@ capsuleList.addEventListener("click", async (event) => {
 });
 
 // Open the locked capsule popup
-
 capsuleList.addEventListener("click", function (event) {
 
     // Find the capsule that was clicked
@@ -264,6 +263,16 @@ capsuleList.addEventListener("click", function (event) {
     // Check if capsule is still locked
     const currentDate = new Date();
     const isLocked = openingDate > currentDate;
+
+    // If capsule is unlocked, open it directly
+    if (!isLocked) {
+
+        const capsuleId = capsuleContent.dataset.capsuleId;
+
+        window.location.href = `/pages/open-capsule.html?id=${capsuleId}`;
+
+        return;
+    }
 
     // Find the popup elements
     const modalTitle = document.getElementById("lockedModalLabel");
