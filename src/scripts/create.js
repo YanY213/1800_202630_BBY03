@@ -4,6 +4,35 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { onAuthReady } from "../authentication.js";
 import * as bootstrap from "bootstrap";
 
+
+// Image preview styling
+const style = document.createElement("style");
+
+style.textContent = `
+  #imagePreview {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  #carouselExampleIndicators {
+    height: 160px;
+  }
+
+  #carouselExampleIndicators .carousel-inner,
+  #carouselExampleIndicators .carousel-item {
+    height: 160px;
+  }
+
+  #carouselExampleIndicators img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+
+document.head.appendChild(style);
+
 // Shrink a photo so its longest side is at most maxSize px,
 // then return it as a base64 text string ("data:image/jpeg;base64,....")
 function resizeImage(file, maxSize = 600) {
