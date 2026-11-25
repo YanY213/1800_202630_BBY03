@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -20,6 +21,26 @@
 
   <!-- Web Components -->
   <script type="module" src="/src/components/site-navbar.js"></script>
+
+  <!-- Masonry Gallery CSS -->
+  <style>
+    .image-gallery {
+      columns: 3 200px;
+      column-gap: 15px;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 15px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -53,16 +74,22 @@
 
     </div>
 
+    <!-- Capsule Message -->
+    <div class="text-center mb-4">
+      <p id="capsule-message" class="fs-4"></p>
+    </div>
+
     <!-- Capsule Images -->
     <div class="card mb-4">
 
       <div class="card-body">
 
-        <h3 class="card-title">
+        <h3 class="card-title mb-3">
           <i class="bi bi-images"></i> Your Memories
         </h3>
 
-        <div class="row g-3" id="capsule-images">
+        <!-- Masonry Image Gallery -->
+        <div id="capsule-images" class="image-gallery">
 
           <!-- Saved images will appear here -->
 
@@ -75,10 +102,10 @@
     <!-- Image Template -->
     <template id="image-template">
 
-      <div class="col-6 col-md-4">
+      <div class="gallery-item">
 
         <img
-          class="img-fluid rounded capsule-image"
+          class="img-fluid rounded"
           alt="Saved capsule memory"
         />
 
@@ -90,6 +117,7 @@
   <!-- End Main Content -->
 
   <!-- JavaScript Files -->
+  <script type="module" src="/src/scripts/open-capsule.js"></script>
   <script type="module" src="/src/main.js"></script>
 
 </body>

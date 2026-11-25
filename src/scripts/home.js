@@ -243,7 +243,6 @@ capsuleList.addEventListener("click", async (event) => {
 });
 
 // Open the locked capsule popup
-
 capsuleList.addEventListener("click", function (event) {
 
     // Find the capsule that was clicked
@@ -265,6 +264,16 @@ capsuleList.addEventListener("click", function (event) {
     const currentDate = new Date();
     const isLocked = openingDate > currentDate;
 
+    // If capsule is unlocked, open it directly
+    if (!isLocked) {
+
+        const capsuleId = capsuleContent.dataset.capsuleId;
+
+        window.location.href = `/pages/open-capsule.html?id=${capsuleId}`;
+
+        return;
+    }
+
     // Find the popup elements
     const modalTitle = document.getElementById("lockedModalLabel");
     const modalIcon = document.getElementById("modal-lock-icon");
@@ -282,30 +291,15 @@ capsuleList.addEventListener("click", function (event) {
     // Update popup title
     modalTitle.textContent = title;
 
-    // Display locked or unlocked information
-    if (isLocked) {
+    // Display locked capsule information
+    modalIcon.className = "bi bi-lock-fill fs-1";
 
-        modalIcon.className = "bi bi-lock-fill fs-1";
+    modalStatus.textContent = "This Capsule Is Locked";
 
-        modalStatus.textContent = "This Capsule Is Locked";
+    modalMessage.textContent =
+        "Your memories will be available when this capsule unlocks.";
 
-        modalMessage.textContent =
-            "Your memories will be available when this capsule unlocks.";
-
-        modalOpeningDate.textContent = "Opens " + formattedDate;
-
-    } else {
-
-        modalIcon.className = "bi bi-unlock-fill fs-1";
-
-        modalStatus.textContent = "This Capsule Is Unlocked!";
-
-        modalMessage.textContent =
-            "Your memories are now available. Open your capsule to explore them!";
-
-        modalOpeningDate.textContent = "Opened " + formattedDate;
-
-    }
+    modalOpeningDate.textContent = "Opens " + formattedDate;
 
     // Display the Bootstrap modal
     const modalElement = document.getElementById("lockedModal");
