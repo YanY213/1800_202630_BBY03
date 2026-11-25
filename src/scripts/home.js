@@ -132,7 +132,7 @@ function displayCapsules(snapshot) {
         const hoursRemaining = totalHours % 24;
 
         const capsuleHTML = `
-            <div class="card bg-light mb-3 capsuleCard">
+            <div class="card bg-light mb-3 capsuleCard" style="cursor:pointer;">
 
                 <div class="card-body">
 
