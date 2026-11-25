@@ -104,7 +104,40 @@ function initUI() {
 
         const filesSnap = await getDocs(filesRef);
 
+        // Display capsule images
+        displayImages(filesSnap);
     });
+
+// Display capsule images
+function displayImages(filesSnap) {
+
+    // Clear existing images
+    capsuleImages.replaceChildren();
+
+    // Loop through files
+    filesSnap.forEach((fileDoc) => {
+
+        // Get document information
+        const file = fileDoc.data();
+
+        // Get image
+        const image = file.image;
+
+        // Clone image template
+        const imageHTML = imageTemplate.content.cloneNode(true);
+
+        // Find image element
+        const img = imageHTML.querySelector("img");
+
+        // Set image
+        img.src = image;
+
+        // Add image to page
+        capsuleImages.appendChild(imageHTML);
+
+    });
+
+}
 
 }
 
