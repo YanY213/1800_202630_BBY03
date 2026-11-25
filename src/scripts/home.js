@@ -234,12 +234,13 @@ capsuleList.addEventListener("click", async (event) => {
     if (!deleteButton) {
         return;
     }
+
+    event.stopPropagation();
+
     if (!currentUserId) {
       alert("You must be logged in to delete a capsule.");
       return;
     }
-
-    event.stopPropagation();
 
     const capsuleId = deleteButton.dataset.capsuleId;
 
@@ -274,8 +275,13 @@ capsuleList.addEventListener("click", async (event) => {
 // Open the locked capsule popup
 capsuleList.addEventListener("click", function (event) {
 
+    // Ignore clicks on the delete button
+    if (event.target.closest(".delete-btn")) {
+        return;
+    }
+
     // Find the capsule that was clicked
-    const capsuleContent = event.target.closest(".capsule-content");
+    const capsuleContent = event.target.closest(".card-body");
 
     // If the click wasn't on a capsule, stop
     if (!capsuleContent) {
