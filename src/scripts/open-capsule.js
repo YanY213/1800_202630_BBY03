@@ -16,14 +16,15 @@ let currentUserId = null;
 const capsuleImages = document.getElementById("capsule-images");
 const imageTemplate = document.getElementById("image-template");
 
-// Get capsule ID from URL
-const urlParams = new URLSearchParams(window.location.search);
-const capsuleId = urlParams.get("id");
+
 
 
 function initUI() {
 
     onAuthReady(async function (user) {
+        // Get capsule ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const capsuleId = urlParams.get("id");
 
         if (!user) {
             location.href = "/index.html";
@@ -47,9 +48,9 @@ function initUI() {
             capsuleId
         );
 
-        const capsuleSnap = await getDoc(capsuleRef);
+        const capsuleDoc = await getDoc(capsuleRef);
 
-        if (!capsuleSnap.exists()) {
+        if (!capsuleDoc.exists()) {
             console.error("Capsule not found.");
             return;
         }
@@ -64,7 +65,6 @@ function initUI() {
         const openingDate = capsule.openingDate.toDate();
         const title = capsule.title;
         const memoryCount = capsule.memoryCount;
-        const capsuleId = capsuleDoc.id;
 
         const currentDate = new Date();
 
@@ -97,7 +97,7 @@ function initUI() {
         const images = capsule.file || [];
 
         // Display capsule images
-        displayImages(filesSnap);
+        displayImages(images);
     });
 }
 
@@ -122,3 +122,6 @@ function displayImages(images) {
 
     });
 }
+
+// Initilize page
+document.addEventListener("DOMContentLoaded", initUI);
