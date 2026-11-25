@@ -142,8 +142,9 @@ function initUI() {
 
       const title = titleInput?.value?.trim() ?? "";
       const message = messageInput?.value?.trim() ?? "";
-      const openingDate = new Date(openingDateInput?.value) ?? serverTimestamp;
       const hidden = hiddenCheckBox?.checked ?? false;
+      const [year, month, day] = openingDateInput.value.split("-").map(Number);
+      const openingDate = new Date(year, month - 1, day);
 
       await addDoc(capsuleRef, {
         title,
