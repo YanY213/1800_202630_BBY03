@@ -99,6 +99,7 @@ function initUI() {
         // Display capsule images
         displayImages(filesSnap);
     });
+}
 
 // Display capsule images
 function displayImages(images) {
@@ -121,6 +122,3 @@ function displayImages(images) {
 
     });
 }
-
-}
-
