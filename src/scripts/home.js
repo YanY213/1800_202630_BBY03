@@ -17,6 +17,7 @@ let latestSnapshot = null;
 const searchBar = document.getElementById("searchbar");
 const capsuleList = document.getElementById("capsule-list");
 const emptyMessage = document.getElementById("empty-message");
+const capsuleFilter = document.getElementById("capsule-filter");
 
 
 function initUI() {
@@ -53,17 +54,36 @@ function displayCapsules(snapshot) {
     capsuleList.replaceChildren();
 
     const searchText = searchBar.value.toLowerCase().trim();
-        
-    const visableCapsules = snapshot.docs.filter(
+    const selectedFilter = capsuleFilter.value;
+    const currentDate = new Date();
+
+    // Remove hidden capsules
+    const visibleCapsules = snapshot.docs.filter(
         capsuleDoc => capsuleDoc.data().hidden !== true
     );
 
-    const filteredCapsules = visableCapsules.filter(capsuleDoc => {
+    // Apply search and locked/unlocked filters
+    const filteredCapsules = visibleCapsules.filter(capsuleDoc => {
 
-        const title = capsuleDoc.data().title.toLowerCase();
+        const capsule = capsuleDoc.data();
 
-        return title.includes(searchText);
-    })
+        const title = capsule.title.toLowerCase();
+
+        const openingDate = capsule.openingDate.toDate();
+
+        const isLocked = openingDate > currentDate;
+
+        // Check if title matches search
+        const matchesSearch = title.includes(searchText);
+
+        // Check if capsule matches selected filter
+        const matchesFilter =
+            selectedFilter === "all" ||
+            (selectedFilter === "locked" && isLocked) ||
+            (selectedFilter === "unlocked" && !isLocked);
+
+        return matchesSearch && matchesFilter;
+    });
 
     emptyMessage.hidden = filteredCapsules.length !== 0;
 
@@ -190,6 +210,15 @@ function displayCapsules(snapshot) {
 
 // Search capsules by title
 searchBar.addEventListener("input", function () {
+
+    if (latestSnapshot) {
+        displayCapsules(latestSnapshot);
+    }
+
+});
+
+// Filter capsules by locked/unlocked status
+capsuleFilter.addEventListener("change", function () {
 
     if (latestSnapshot) {
         displayCapsules(latestSnapshot);
