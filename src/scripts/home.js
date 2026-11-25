@@ -291,40 +291,25 @@ capsuleList.addEventListener("click", function (event) {
     // Update popup title
     modalTitle.textContent = title;
 
-    // Display locked or unlocked information
-    if (isLocked) {
+    // Display locked capsule information
+    modalIcon.className = "bi bi-lock-fill fs-1";
 
-        modalIcon.className = "bi bi-lock-fill fs-1";
+    modalStatus.textContent = "This Capsule Is Locked";
 
-        modalStatus.textContent = "This Capsule Is Locked";
+    modalMessage.textContent =
+        "Your memories will be available when this capsule unlocks.";
 
-        modalMessage.textContent =
-            "Your memories will be available when this capsule unlocks.";
+    modalOpeningDate.textContent = "Opens " + formattedDate;
 
-        modalOpeningDate.textContent = "Opens " + formattedDate;
+        // Display the Bootstrap modal
+        const modalElement = document.getElementById("lockedModal");
+        modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
 
-    } else {
+        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
 
-        modalIcon.className = "bi bi-unlock-fill fs-1";
+        modal.show();
 
-        modalStatus.textContent = "This Capsule Is Unlocked!";
-
-        modalMessage.textContent =
-            "Your memories are now available. Open your capsule to explore them!";
-
-        modalOpeningDate.textContent = "Opened " + formattedDate;
-
-    }
-
-    // Display the Bootstrap modal
-    const modalElement = document.getElementById("lockedModal");
-    modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
-
-    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-
-    modal.show();
-
-});
+    });
 
 
 // Keyboard support for capsule popup
