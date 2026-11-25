@@ -1,0 +1,50 @@
+:root {
+    --dark: #282520;
+    --brown: #4F453A;
+    --taupe: #978165;
+    --sand: #D3C4A5;
+    --cream: #F2EBDE;
+    --white: #FFFFFF;
+}
+
+/* Background colors */
+.bg-dark-custom {
+    background-color: var(--dark);
+}
+
+.bg-brown {
+    background-color: var(--brown);
+}
+
+.bg-taupe {
+    background-color: var(--taupe);
+}
+
+.bg-sand {
+    background-color: var(--sand);
+}
+
+.bg-cream {
+    background-color: var(--cream);
+}
+
+/* Text colors */
+.text-dark-custom {
+    color: var(--dark);
+}
+
+.text-brown {
+    color: var(--brown);
+}
+
+.text-taupe {
+    color: var(--taupe);
+}
+
+.text-sand {
+    color: var(--sand);
+}
+
+.text-cream {
+    color: var(--cream);
+}
