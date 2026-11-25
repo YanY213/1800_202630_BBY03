@@ -21,6 +21,9 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
 
+    <!-- Website FavIcon-->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+
     <!-- Web Components for shared navbar and footer layout -->
     <script type="module" src="/src/components/site-navbar.js"></script>
   </head>
@@ -61,19 +64,67 @@
               class="form-control"
               id="messageInput"
               rows="5"
-              style="resize: none; width: 100%;"
+              style="resize: none; width: 100%"
             ></textarea>
           </div>
 
           <!-- File Selection -->
           <div class="mb-3">
-            <label for="formFile" class="form-label">Add Files:</label>
+            <label for="formFile" class="form-label">Add Image:</label>
             <input
               class="form-control"
               type="file"
               id="fileInput"
               accept="image/*"
             />
+
+            <!-- Image Preview -->
+            <div class="my-3" id="imagePreview" hidden>
+              <label for="formFile" class="form-label">Image Preview:</label>
+
+              <div id="carouselExampleIndicators" class="carousel slide">
+                <!-- Indicators -->
+                <div
+                  class="carousel-indicators bg-dark opacity-50 rounded"
+                  id="carousel-indicators"
+                ></div>
+
+                <!-- Images -->
+                <div class="carousel-inner" id="carousel-inner"></div>
+
+                <!-- Previous Button -->
+                <button
+                  class="carousel-control-prev p-10"
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide="prev"
+                >
+                  <span
+                    class="carousel-control-prev-icon bg-dark rounded-3"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+
+                <!-- Next Button -->
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide="next"
+                >
+                  <span
+                    class="carousel-control-next-icon bg-dark rounded-3"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              </div>
+
+              <div class="my-3">
+                <button type="button" class="btn btn-danger" id="removeImgBtn">
+                  Remove Current Image
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Select Date -->
@@ -87,8 +138,8 @@
           <!-- Hide Capsule Button -->
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label"
-              >Hide Time Capsule: 
-              <i 
+              >Hide Time Capsule:
+              <i
                 class="bi bi-question-circle"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
