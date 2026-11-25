@@ -62,46 +62,69 @@ function displayFiles() {
   console.log(selectedFiles);
 
   const imagePreview = document.getElementById("imagePreview");
-  imagePreview.hidden = true;
-  carouselCurrentIndex = 0;
-
-  if (selectedFiles.length === 0) {
-    return;
-  }
+  const carouselElement = document.getElementById("carouselExampleIndicators");
 
   const carouselIndicators = document.getElementById("carousel-indicators");
   const carouselInner = document.getElementById("carousel-inner");
 
+  // Hide preview
+  imagePreview.hidden = true;
+
+  // Dispose of the previous carousel instance
+  const oldCarousel = bootstrap.Carousel.getInstance(carouselElement);
+
+  if (oldCarousel) {
+    oldCarousel.dispose();
+  }
+
+  // Clear previous slides and indicators
   carouselIndicators.innerHTML = "";
   carouselInner.innerHTML = "";
 
+  // No images selected
+  if (selectedFiles.length === 0) {
+    return;
+  }
+
+  // Select the newest image
+  carouselCurrentIndex = selectedFiles.length - 1;
+
   selectedFiles.forEach((file, i) => {
-    ((carouselIndicators.innerHTML =
-      carouselIndicators.innerHTML +
-      `
+
+    // Create indicators
+    carouselIndicators.innerHTML += `
       <button
         type="button"
         data-bs-target="#carouselExampleIndicators"
         data-bs-slide-to="${i}"
-        class="${i === 0 ? "active" : ""}"
-        aria-current="true"
+        class="${i === carouselCurrentIndex ? "active" : ""}"
+        aria-current="${i === carouselCurrentIndex ? "true" : "false"}"
         aria-label="Slide ${i + 1}"
       ></button>
-      `),
-      (carouselInner.innerHTML =
-        carouselInner.innerHTML +
-        `
-      <div class="carousel-item ${i === 0 ? "active" : ""}">
+    `;
+
+    // Create slides
+    carouselInner.innerHTML += `
+      <div class="carousel-item ${i === carouselCurrentIndex ? "active" : ""}">
         <img
           src="${file}"
           class="d-block w-100 object-fit-contain"
           alt="Image"
         />
       </div>
-      `));
+    `;
   });
 
+  // Show preview
   imagePreview.hidden = false;
+
+  // Initialize carousel at the newest image
+  const carousel = new bootstrap.Carousel(carouselElement, {
+    interval: false,
+    wrap: true
+  });
+
+  carousel.to(carouselCurrentIndex);
 }
 
 // Track current carousel index
