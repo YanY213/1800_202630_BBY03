@@ -5,8 +5,6 @@ import { db } from "../firebaseConfig.js";
 import {
     doc,
     getDoc,
-    collection,
-    getDocs
 } from "firebase/firestore";
 
 
@@ -16,7 +14,7 @@ let currentUserId = null;
 
 // HTML Elements
 const capsuleImages = document.getElementById("capsule-images");
-const imageTemplate = document.getElementById("images-template");
+const imageTemplate = document.getElementById("image-template");
 
 // Get capsule ID from URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -33,6 +31,7 @@ function initUI() {
         }
 
         currentUserId = user.uid;
+        console.log("testing");
 
         if (!capsuleId) {
             console.error("No capsule ID provided.");
@@ -92,36 +91,21 @@ function initUI() {
 
         document.getElementById("unlock-date").textContent = openingDateShort;
 
-        // Get files subcollection
-        const filesRef = collection(
-            db,
-            "users",
-            currentUserId,
-            "timeCapsules",
-            capsuleId,
-            "files"
-        );
+        document.getElementById("capsule-message").textContent = message || "";
 
-        const filesSnap = await getDocs(filesRef);
+       // Get images from capsule document
+        const images = capsule.file || [];
 
         // Display capsule images
         displayImages(filesSnap);
     });
 
 // Display capsule images
-function displayImages(filesSnap) {
+function displayImages(images) {
 
-    // Clear existing images
     capsuleImages.replaceChildren();
 
-    // Loop through files
-    filesSnap.forEach((fileDoc) => {
-
-        // Get document information
-        const file = fileDoc.data();
-
-        // Get image
-        const image = file.image;
+    images.forEach((image) => {
 
         // Clone image template
         const imageHTML = imageTemplate.content.cloneNode(true);
@@ -129,14 +113,13 @@ function displayImages(filesSnap) {
         // Find image element
         const img = imageHTML.querySelector("img");
 
-        // Set image
+        // Set image source
         img.src = image;
 
         // Add image to page
         capsuleImages.appendChild(imageHTML);
 
     });
-
 }
 
 }
