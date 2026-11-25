@@ -32,7 +32,6 @@ function initUI() {
         }
 
         currentUserId = user.uid;
-        console.log("testing");
 
         if (!capsuleId) {
             console.error("No capsule ID provided.");
