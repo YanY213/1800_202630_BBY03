@@ -22,7 +22,7 @@
     />
 
     <!-- Website FavIcon-->
-    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
 
     <!-- Web Components for shared navbar and footer layout -->
     <script type="module" src="/src/components/site-navbar.js"></script>
@@ -41,8 +41,8 @@
         <h1>Create</h1>
         <p>Make your Time Capsule here.</p>
 
-        <!-- Title Input -->
-        <form id="createCapsuleForm" novalidate>
+        <form class="needs-validation" id="createCapsuleForm" novalidate>
+          <!-- Title Input -->
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label"
               >Enter a Title:</label
@@ -52,7 +52,11 @@
               class="form-control"
               id="titleInput"
               placeholder="My Time Capsule"
+              required
             />
+            <div class="invalid-feedback">
+              Please Enter a Title for your Time Capsule
+            </div>
           </div>
 
           <!-- Message Input -->
@@ -132,7 +136,15 @@
             <label for="exampleFormControlInput1" class="form-label"
               >Opening Date:</label
             >
-            <input type="date" class="form-control" id="openingDateInput" />
+            <input
+              type="date"
+              class="form-control"
+              id="openingDateInput"
+              required
+            />
+            <div class="invalid-feedback">
+              Please Select a Opening Date for your Time Capsule
+            </div>
           </div>
 
           <!-- Hide Capsule Button -->
