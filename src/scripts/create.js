@@ -4,7 +4,6 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { onAuthReady } from "../authentication.js";
 import * as bootstrap from "bootstrap";
 
-
 // Image preview styling
 const style = document.createElement("style");
 
@@ -59,7 +58,7 @@ const fileInput = document.getElementById("fileInput");
 
 // Render carousel Image Preview
 function displayFiles() {
-  console.log(selectedFiles);
+  // console.log(selectedFiles); // For Debug
 
   const imagePreview = document.getElementById("imagePreview");
   const carouselElement = document.getElementById("carouselExampleIndicators");
@@ -90,7 +89,6 @@ function displayFiles() {
   carouselCurrentIndex = selectedFiles.length - 1;
 
   selectedFiles.forEach((file, i) => {
-
     // Create indicators
     carouselIndicators.innerHTML += `
       <button
@@ -121,7 +119,7 @@ function displayFiles() {
   // Initialize carousel at the newest image
   const carousel = new bootstrap.Carousel(carouselElement, {
     interval: false,
-    wrap: true
+    wrap: true,
   });
 
   carousel.to(carouselCurrentIndex);
@@ -208,7 +206,7 @@ function initUI() {
         createdAt: serverTimestamp(),
       });
 
-      console.log("Time Capsule Created");
+      console.log("Time Capsule Created!");
 
       location.href = "home.html";
     } catch (err) {
@@ -219,7 +217,15 @@ function initUI() {
   // --- Event Listeners ---
   createCapsuleForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    createCapsule();
+    console.log("Attempt to Create a Time Capsule");
+    if (!createCapsuleForm.checkValidity()) {
+      console.log("Error! Required Fields are not Filled.");
+      event.stopPropagation();
+    } else {
+      createCapsule();
+    }
+
+    createCapsuleForm.classList.add("was-validated");
   });
 }
 
