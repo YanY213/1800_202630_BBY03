@@ -1,15 +1,15 @@
 import { onAuthReady } from "../authentication.js";
 
-import { db } from "../firebaseConfig.js"
+import { db } from "../firebaseConfig.js";
 import * as bootstrap from "bootstrap";
 
-import { 
-    collection,
-    onSnapshot,
-    doc,
-    deleteDoc,
-    Timestamp
-} from "firebase/firestore"
+import {
+  collection,
+  onSnapshot,
+  doc,
+  deleteDoc,
+  Timestamp,
+} from "firebase/firestore";
 
 let currentUserId = null;
 let lastClickedCapsule = null;
@@ -19,7 +19,6 @@ const capsuleList = document.getElementById("capsule-list");
 const emptyMessage = document.getElementById("empty-message");
 const capsuleFilter = document.getElementById("capsule-filter");
 
-
 function initUI() {
   onAuthReady(function (user) {
     if (!user) {
@@ -27,118 +26,106 @@ function initUI() {
       return;
     }
 
-    currentUserId = user.uid
+    currentUserId = user.uid;
 
-    const capsuleRef = collection(
-      db,
-      "users",
-      currentUserId,
-      "timeCapsules"
-    );
+    const capsuleRef = collection(db, "users", currentUserId, "timeCapsules");
 
     // Listen for changes
     onSnapshot(capsuleRef, (snapshot) => {
+      latestSnapshot = snapshot;
 
-        latestSnapshot = snapshot;
-
-        displayCapsules(snapshot);
-
+      displayCapsules(snapshot);
     });
-
-
   });
 }
 
 function displayCapsules(snapshot) {
+  capsuleList.replaceChildren();
 
-    capsuleList.replaceChildren();
+  const searchText = searchBar.value.toLowerCase().trim();
+  const selectedFilter = capsuleFilter.value;
+  const currentDate = new Date();
 
-    const searchText = searchBar.value.toLowerCase().trim();
-    const selectedFilter = capsuleFilter.value;
+  // Hide capsules only if they are hidden AND still locked
+  const visibleCapsules = snapshot.docs.filter((capsuleDoc) => {
+    const capsule = capsuleDoc.data();
+
+    const openingDate = capsule.openingDate.toDate();
+
+    const isLocked = openingDate > currentDate;
+
+    return capsule.hidden !== true || !isLocked;
+  });
+
+  // Apply search and locked/unlocked filters
+  const filteredCapsules = visibleCapsules.filter((capsuleDoc) => {
+    const capsule = capsuleDoc.data();
+
+    const title = capsule.title.toLowerCase();
+
+    const openingDate = capsule.openingDate.toDate();
+
+    const isLocked = openingDate > currentDate;
+
+    // Check if title matches search
+    const matchesSearch = title.includes(searchText);
+
+    // Check if capsule matches selected filter
+    const matchesFilter =
+      selectedFilter === "all" ||
+      (selectedFilter === "locked" && isLocked) ||
+      (selectedFilter === "unlocked" && !isLocked);
+
+    return matchesSearch && matchesFilter;
+  });
+
+  emptyMessage.hidden = filteredCapsules.length !== 0;
+
+  filteredCapsules.forEach((capsuleDoc) => {
+    // Capsule Info Variables
+    const capsule = capsuleDoc.data();
+
+    const createdAt = capsule.createdAt.toDate();
+    const fileRef = capsule.fileRef;
+    const hidden = capsule.hidden;
+    const message = capsule.message;
+    const openingDate = capsule.openingDate.toDate();
+    const title = capsule.title;
+    const memoryCount = capsule.memoryCount;
+    const capsuleId = capsuleDoc.id;
+
     const currentDate = new Date();
 
-    // Hide capsules only if they are hidden AND still locked
-    const visibleCapsules = snapshot.docs.filter(capsuleDoc => {
-
-        const capsule = capsuleDoc.data();
-
-        const openingDate = capsule.openingDate.toDate();
-
-        const isLocked = openingDate > currentDate;
-
-        return capsule.hidden !== true || !isLocked;
+    const createdAtShort = createdAt.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+    const openingDateShort = openingDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
     });
 
-    // Apply search and locked/unlocked filters
-    const filteredCapsules = visibleCapsules.filter(capsuleDoc => {
+    const isLocked = openingDate > currentDate;
 
-        const capsule = capsuleDoc.data();
+    // Difference in milliseconds
+    const diffMs = openingDate - currentDate;
 
-        const title = capsule.title.toLowerCase();
+    // Calculate progress percentage
+    const totalDuration = openingDate - createdAt;
 
-        const openingDate = capsule.openingDate.toDate();
+    const elapsedTime = currentDate - createdAt;
 
-        const isLocked = openingDate > currentDate;
-
-        // Check if title matches search
-        const matchesSearch = title.includes(searchText);
-
-        // Check if capsule matches selected filter
-        const matchesFilter =
-            selectedFilter === "all" ||
-            (selectedFilter === "locked" && isLocked) ||
-            (selectedFilter === "unlocked" && !isLocked);
-
-        return matchesSearch && matchesFilter;
-    });
-
-    emptyMessage.hidden = filteredCapsules.length !== 0;
-
-    filteredCapsules.forEach((capsuleDoc) => {
-
-        // Capsule Info Variables
-        const capsule = capsuleDoc.data();
-
-        const createdAt = capsule.createdAt.toDate();
-        const fileRef = capsule.fileRef;
-        const hidden = capsule.hidden;
-        const message = capsule.message;
-        const openingDate = capsule.openingDate.toDate();
-        const title = capsule.title;
-        const memoryCount = capsule.memoryCount;
-        const capsuleId = capsuleDoc.id;
-
-        const currentDate = new Date();
-
-        const createdAtShort = createdAt.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric'
-        });
-        const openingDateShort = openingDate.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric'
-        });
-
-        const isLocked = openingDate > currentDate;
-
-        // Difference in milliseconds
-        const diffMs = openingDate - currentDate;
-
-        // Calculate progress percentage
-        const totalDuration = openingDate - createdAt;
-        
-        const elapsedTime = currentDate - createdAt;
-
-        const progress = totalDuration > 0
+    const progress =
+      totalDuration > 0
         ? Math.max(0, Math.min(100, (elapsedTime / totalDuration) * 100))
         : 100;
 
-        // Convert milliseconds into days and hours
-        const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const daysRemaining = Math.floor(totalHours / 24);
-        const hoursRemaining = totalHours % 24;
+    // Convert milliseconds into days and hours
+    const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const daysRemaining = Math.floor(totalHours / 24);
+    const hoursRemaining = totalHours % 24;
 
-        const capsuleHTML = `
+    const capsuleHTML = `
             <div class="card bg-light mb-3 capsuleCard" style="cursor:pointer;">
 
                 <div class="card-body">
@@ -156,7 +143,7 @@ function displayCapsules(snapshot) {
                         <div class="d-flex align-items-center gap-3 mb-3">
                             
                             <div class="border border-dark rounded d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
-                                <i class="bi ${isLocked ? 'bi-lock-fill' : 'bi-unlock-fill'} fs-2"></i>
+                                <i class="bi ${isLocked ? "bi-lock-fill" : "bi-unlock-fill"} fs-2"></i>
                             </div>
 
 
@@ -179,9 +166,11 @@ function displayCapsules(snapshot) {
                             </h5>
 
                             <p class="fw-bold mb-2">
-                                ${isLocked
+                                ${
+                                  isLocked
                                     ? `${daysRemaining} Days ${hoursRemaining} Hours`
-                                    : "Your capsule is ready!"}
+                                    : "Your capsule is ready!"
+                                }
                             </p>
 
                             <div class="progress mb-2">
@@ -202,181 +191,158 @@ function displayCapsules(snapshot) {
                     <button
                         type="button"
                         class="btn btn-danger mt-3 delete-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteCapsuleModal"
                         data-capsule-id="${capsuleId}"
                     >
                         <i class="bi bi-trash"></i> Delete
                     </button>
-
                 </div>
             </div>
         `;
 
-        capsuleList.insertAdjacentHTML("beforeend", capsuleHTML);
-    })
+    capsuleList.insertAdjacentHTML("beforeend", capsuleHTML);
+  });
 }
 
 // Search capsules by title
 searchBar.addEventListener("input", function () {
-
-    if (latestSnapshot) {
-        displayCapsules(latestSnapshot);
-    }
-
+  if (latestSnapshot) {
+    displayCapsules(latestSnapshot);
+  }
 });
 
 // Filter capsules by locked/unlocked status
 capsuleFilter.addEventListener("change", function () {
-
-    if (latestSnapshot) {
-        displayCapsules(latestSnapshot);
-    }
-
+  if (latestSnapshot) {
+    displayCapsules(latestSnapshot);
+  }
 });
 
 // Delete capsule button
-capsuleList.addEventListener("click", async (event) => {
+capsuleList.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest(".delete-btn");
 
-    const deleteButton = event.target.closest(".delete-btn");
+  if (!deleteButton) {
+    return;
+  }
 
-    if (!deleteButton) {
-        return;
-    }
+  event.stopPropagation();
 
-    event.stopPropagation();
+  if (!currentUserId) {
+    alert("You must be logged in to delete a capsule.");
+    return;
+  }
 
-    if (!currentUserId) {
-      alert("You must be logged in to delete a capsule.");
-      return;
-    }
+  const capsuleId = deleteButton.dataset.capsuleId;
 
-    const capsuleId = deleteButton.dataset.capsuleId;
-
-    if (!confirm("Are you sure you want to delete this time capsule?")) {
-        return;
-    }
-
-    try {
-
+  document
+    .getElementById("confirmDelete")
+    .addEventListener("click", async () => {
+      try {
         await deleteDoc(
-            doc(
-                db,
-                "users",
-                currentUserId,
-                "timeCapsules",
-                capsuleId
-            )
+          doc(db, "users", currentUserId, "timeCapsules", capsuleId),
         );
 
         console.log("Capsule successfully deleted!");
-
-    } catch (error) {
-
+      } catch (error) {
         console.error("Error deleting capsule:", error);
 
         alert("Could not delete the time capsule.");
-
-    }
-
+      }
+    });
 });
 
 // Click on capsule logic
 capsuleList.addEventListener("click", function (event) {
+  // Ignore clicks on the delete button
+  if (event.target.closest(".delete-btn")) {
+    return;
+  }
 
-    // Ignore clicks on the delete button
-    if (event.target.closest(".delete-btn")) {
-        return;
-    }
+  // Find the capsule that was clicked
+  const cardBody = event.target.closest(".card-body");
+  const capsuleContent = cardBody.querySelector(".capsule-content");
 
-    // Find the capsule that was clicked
-    const cardBody = event.target.closest(".card-body");
-    const capsuleContent = cardBody.querySelector(".capsule-content");
+  // console.log(capsuleContent); // Log for Debug
 
-    console.log(capsuleContent);
+  // If the click wasn't on a capsule, stop
+  if (!capsuleContent) {
+    return;
+  }
 
-    // If the click wasn't on a capsule, stop
-    if (!capsuleContent) {
-        return;
-    }
+  // Remember which capsule opened the popup
+  lastClickedCapsule = capsuleContent;
 
-    // Remember which capsule opened the popup
-    lastClickedCapsule = capsuleContent;
+  // Retrieve capsule information from its data attributes
+  const title = capsuleContent.dataset.capsuleTitle;
+  const openingDate = new Date(capsuleContent.dataset.openingDate);
 
-    // Retrieve capsule information from its data attributes
-    const title = capsuleContent.dataset.capsuleTitle;
-    const openingDate = new Date(capsuleContent.dataset.openingDate);
+  // Check if capsule is still locked
+  const currentDate = new Date();
+  const isLocked = openingDate > currentDate;
 
-    // Check if capsule is still locked
-    const currentDate = new Date();
-    const isLocked = openingDate > currentDate;
+  // If capsule is unlocked, open it directly
+  if (!isLocked) {
+    const capsuleId = capsuleContent.dataset.capsuleId;
 
-    // If capsule is unlocked, open it directly
-    if (!isLocked) {
+    window.location.href = `/pages/open-capsule.html?id=${capsuleId}`;
 
-        const capsuleId = capsuleContent.dataset.capsuleId;
+    return;
+  }
 
-        window.location.href = `/pages/open-capsule.html?id=${capsuleId}`;
+  // Find the popup elements
+  const modalTitle = document.getElementById("lockedModalLabel");
+  const modalIcon = document.getElementById("modal-lock-icon");
+  const modalStatus = document.getElementById("modal-status");
+  const modalMessage = document.getElementById("modal-message");
+  const modalOpeningDate = document.getElementById("modal-opening-date");
 
-        return;
-    }
+  // Format opening date
+  const formattedDate = openingDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-    // Find the popup elements
-    const modalTitle = document.getElementById("lockedModalLabel");
-    const modalIcon = document.getElementById("modal-lock-icon");
-    const modalStatus = document.getElementById("modal-status");
-    const modalMessage = document.getElementById("modal-message");
-    const modalOpeningDate = document.getElementById("modal-opening-date");
+  // Update popup title
+  modalTitle.textContent = title;
 
-    // Format opening date
-    const formattedDate = openingDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
+  // Display locked capsule information
+  modalIcon.className = "bi bi-lock-fill fs-1";
 
-    // Update popup title
-    modalTitle.textContent = title;
+  modalStatus.textContent = "This Capsule Is Locked";
 
-    // Display locked capsule information
-    modalIcon.className = "bi bi-lock-fill fs-1";
+  modalMessage.textContent =
+    "Your memories will be available when this capsule unlocks.";
 
-    modalStatus.textContent = "This Capsule Is Locked";
+  modalOpeningDate.textContent = "Opens " + formattedDate;
 
-    modalMessage.textContent =
-        "Your memories will be available when this capsule unlocks.";
+  // Display the Bootstrap modal
+  const modalElement = document.getElementById("lockedModal");
+  modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
 
-    modalOpeningDate.textContent = "Opens " + formattedDate;
+  const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
 
-    // Display the Bootstrap modal
-    const modalElement = document.getElementById("lockedModal");
-    modalElement.dataset.capsuleId = capsuleContent.dataset.capsuleId;
-
-    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-
-    modal.show();
-
+  modal.show();
 });
-
 
 // Keyboard support for capsule popup
 
 capsuleList.addEventListener("keydown", function (event) {
+  // Find the capsule that was pressed
+  const capsuleContent = event.target.closest(".capsule-content");
 
-    // Find the capsule that was pressed
-    const capsuleContent = event.target.closest(".capsule-content");
+  if (!capsuleContent) {
+    return;
+  }
 
-    if (!capsuleContent) {
-        return;
-    }
+  // Open popup using Enter or Space
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
 
-    // Open popup using Enter or Space
-    if (event.key === "Enter" || event.key === " ") {
-
-        event.preventDefault();
-
-        capsuleContent.click();
-
-    }
-
+    capsuleContent.click();
+  }
 });
 
 // Restore focus after closing the modal
@@ -385,21 +351,17 @@ const modalElement = document.getElementById("lockedModal");
 
 // Remove focus from the modal's Close button before it is hidden
 modalElement.addEventListener("hide.bs.modal", function () {
-
-    if (modalElement.contains(document.activeElement)) {
-        document.activeElement.blur();
-    }
+  if (modalElement.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
 });
 
 // Return focus to the capsule after the modal has finished closing
 modalElement.addEventListener("hidden.bs.modal", function () {
-
-    if (lastClickedCapsule && lastClickedCapsule.isConnected) {
-        lastClickedCapsule.focus();
-    }
-
+  if (lastClickedCapsule && lastClickedCapsule.isConnected) {
+    lastClickedCapsule.focus();
+  }
 });
-
 
 // --- Initialize UI on DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", initUI);
