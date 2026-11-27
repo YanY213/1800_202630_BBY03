@@ -1,139 +1,177 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <title>Time Capsule App</title>
+    <meta name="comp1800 template" content="My 1800 App" />
 
-<head>
-  <title>Time Capsule App</title>
-  <meta name="comp1800 template" content="My 1800 App" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-
-  <!-- Website FavIcon-->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
-
-  <!-- Web Components -->
-  <script type="module" src="/src/components/site-navbar.js"></script>
-</head>
-
-<body>
-
-  <site-navbar></site-navbar>
-
-  <!-- Main Content -->
-  <div class="container pt-4 pb-5 mb-4">
-
-    <!-- Homepage Title -->
-    <h1>My Time Capsules</h1>
-    <p>Explore your saved memories!</p>
-
-    <!-- Search Bar -->
-    <input
-      type="search"
-      class="form-control mb-3"
-      id="searchbar"
-      placeholder="Search your time capsules..."
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
     />
 
-    <!-- Capsule Filter -->
-    <div class="mb-3">
-      <label for="capsule-filter" class="form-label fw-bold">
-        Show Capsules
-      </label>
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
 
-      <select id="capsule-filter" class="form-select">
-        <option value="all">All Capsules</option>
-        <option value="locked">Locked Capsules</option>
-        <option value="unlocked">Unlocked Capsules</option>
-      </select>
+    <!-- Website FavIcon-->
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+
+    <!-- Web Components -->
+    <script type="module" src="/src/components/site-navbar.js"></script>
+  </head>
+
+  <body>
+    <site-navbar></site-navbar>
+
+    <!-- Main Content -->
+    <div class="container pt-4 pb-5 mb-4">
+      <!-- Homepage Title -->
+      <h1>My Time Capsules</h1>
+      <p>Explore your saved memories!</p>
+
+      <!-- Search Bar -->
+      <input
+        type="search"
+        class="form-control mb-3"
+        id="searchbar"
+        placeholder="Search your time capsules..."
+      />
+
+      <!-- Capsule Filter -->
+      <div class="mb-3">
+        <label for="capsule-filter" class="form-label fw-bold">
+          Show Capsules
+        </label>
+
+        <select id="capsule-filter" class="form-select">
+          <option value="all">All Capsules</option>
+          <option value="locked">Locked Capsules</option>
+          <option value="unlocked">Unlocked Capsules</option>
+        </select>
+      </div>
+
+      <!-- Time Capsule Cards -->
+      <div id="capsule-list">
+        <!-- Time capsule cards will appear here -->
+      </div>
+      <!-- End Capsule List -->
+
+      <!-- Empty List Message -->
+      <div class="card mt-4" id="empty-message" hidden>
+        <div class="card-body">
+          <h3 class="card-title">No Visable Time Capsules Yet</h3>
+          <p class="text-muted">Your saved time capsules will appear here.</p>
+        </div>
+      </div>
     </div>
+    <!-- End Main Content -->
 
-    <!-- Time Capsule Cards -->
-    <div id="capsule-list">
-      <!-- Time capsule cards will appear here -->
-    </div>
-    <!-- End Capsule List -->
+    <!-- Locked Capsule Popup -->
+    <div
+      class="modal fade"
+      id="lockedModal"
+      tabindex="-1"
+      aria-labelledby="lockedModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Popup Header -->
+          <div class="modal-header">
+            <h5 class="modal-title" id="lockedModalLabel">
+              <!-- JavaScript inserts capsule title -->
+            </h5>
 
-    <!-- Empty List Message -->
-    <div class="card mt-4" id="empty-message" hidden>
-      <div class="card-body">
-        <h3 class="card-title">No Visable Time Capsules Yet</h3>
-        <p class="text-muted">
-          Your saved time capsules will appear here.
-        </p>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <!-- Popup Body -->
+          <div class="modal-body text-center">
+            <i id="modal-lock-icon" class="bi bi-lock-fill fs-1"></i>
+
+            <h5 id="modal-status" class="mt-3"></h5>
+
+            <p id="modal-message"></p>
+
+            <p id="modal-opening-date" class="fw-bold"></p>
+          </div>
+
+          <!-- Popup Footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
-  <!-- End Main Content -->
+    <!-- Delete Capsule Popup -->
+    <div
+      class="modal fade"
+      id="deleteCapsuleModal"
+      tabindex="-1"
+      aria-labelledby="deleteCapsuleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteCapsuleModalLabel">
+              Delete Capsule
+            </h1>
+          </div>
+          <div class="modal-body text-center">
+            <i
+              id="modal-lock-icon"
+              class="bi bi-exclamation-triangle-fill fs-1 text-danger"
+            ></i>
 
-  <!-- Locked Capsule Popup -->
-  <div
-    class="modal fade"
-    id="lockedModal"
-    tabindex="-1"
-    aria-labelledby="lockedModalLabel"
-    aria-hidden="true"
-  >
+            <h4 id="modal-status" class="mt-3">Are you sure?</h4>
 
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <!-- Popup Header -->
-        <div class="modal-header">
-
-          <h5 class="modal-title" id="lockedModalLabel">
-            <!-- JavaScript inserts capsule title -->
-          </h5>
-
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-
+            <p class="my-3" id="modal-message">
+              You won't be able to revert this!
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="confirmDelete"
+              data-bs-dismiss="modal"
+            >
+              Confirm
+            </button>
+          </div>
         </div>
-
-        <!-- Popup Body -->
-        <div class="modal-body text-center">
-
-          <i id="modal-lock-icon" class="bi bi-lock-fill fs-1"></i>
-
-          <h5 id="modal-status" class="mt-3"></h5>
-
-          <p id="modal-message"></p>
-
-          <p id="modal-opening-date" class="fw-bold"></p>
-
-        </div>
-
-        <!-- Popup Footer -->
-        <div class="modal-footer">
-
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-
-        </div>
-
       </div>
     </div>
-  </div>
 
-  <!-- JavaScript Files -->
-  <script type="module" src="/src/scripts/home.js"></script>
-  <script type="module" src="/src/main.js"></script>
-
-</body>
+    <!-- JavaScript Files -->
+    <script type="module" src="/src/scripts/home.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
