@@ -4,6 +4,35 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { onAuthReady } from "../authentication.js";
 import * as bootstrap from "bootstrap";
 
+
+// Image preview styling
+const style = document.createElement("style");
+
+style.textContent = `
+  #imagePreview {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  #carouselExampleIndicators {
+    height: 160px;
+  }
+
+  #carouselExampleIndicators .carousel-inner,
+  #carouselExampleIndicators .carousel-item {
+    height: 160px;
+  }
+
+  #carouselExampleIndicators img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+
+document.head.appendChild(style);
+
 // Shrink a photo so its longest side is at most maxSize px,
 // then return it as a base64 text string ("data:image/jpeg;base64,....")
 function resizeImage(file, maxSize = 600) {
@@ -33,46 +62,69 @@ function displayFiles() {
   console.log(selectedFiles);
 
   const imagePreview = document.getElementById("imagePreview");
-  imagePreview.hidden = true;
-  carouselCurrentIndex = 0;
-
-  if (selectedFiles.length === 0) {
-    return;
-  }
+  const carouselElement = document.getElementById("carouselExampleIndicators");
 
   const carouselIndicators = document.getElementById("carousel-indicators");
   const carouselInner = document.getElementById("carousel-inner");
 
+  // Hide preview
+  imagePreview.hidden = true;
+
+  // Dispose of the previous carousel instance
+  const oldCarousel = bootstrap.Carousel.getInstance(carouselElement);
+
+  if (oldCarousel) {
+    oldCarousel.dispose();
+  }
+
+  // Clear previous slides and indicators
   carouselIndicators.innerHTML = "";
   carouselInner.innerHTML = "";
 
+  // No images selected
+  if (selectedFiles.length === 0) {
+    return;
+  }
+
+  // Select the newest image
+  carouselCurrentIndex = selectedFiles.length - 1;
+
   selectedFiles.forEach((file, i) => {
-    ((carouselIndicators.innerHTML =
-      carouselIndicators.innerHTML +
-      `
+
+    // Create indicators
+    carouselIndicators.innerHTML += `
       <button
         type="button"
         data-bs-target="#carouselExampleIndicators"
         data-bs-slide-to="${i}"
-        class="${i === 0 ? "active" : ""}"
-        aria-current="true"
+        class="${i === carouselCurrentIndex ? "active" : ""}"
+        aria-current="${i === carouselCurrentIndex ? "true" : "false"}"
         aria-label="Slide ${i + 1}"
       ></button>
-      `),
-      (carouselInner.innerHTML =
-        carouselInner.innerHTML +
-        `
-      <div class="carousel-item ${i === 0 ? "active" : ""}">
+    `;
+
+    // Create slides
+    carouselInner.innerHTML += `
+      <div class="carousel-item ${i === carouselCurrentIndex ? "active" : ""}">
         <img
           src="${file}"
           class="d-block w-100 object-fit-contain"
           alt="Image"
         />
       </div>
-      `));
+    `;
   });
 
+  // Show preview
   imagePreview.hidden = false;
+
+  // Initialize carousel at the newest image
+  const carousel = new bootstrap.Carousel(carouselElement, {
+    interval: false,
+    wrap: true
+  });
+
+  carousel.to(carouselCurrentIndex);
 }
 
 // Track current carousel index
@@ -142,8 +194,9 @@ function initUI() {
 
       const title = titleInput?.value?.trim() ?? "";
       const message = messageInput?.value?.trim() ?? "";
-      const openingDate = new Date(openingDateInput?.value) ?? serverTimestamp;
       const hidden = hiddenCheckBox?.checked ?? false;
+      const [year, month, day] = openingDateInput.value.split("-").map(Number);
+      const openingDate = new Date(year, month - 1, day);
 
       await addDoc(capsuleRef, {
         title,

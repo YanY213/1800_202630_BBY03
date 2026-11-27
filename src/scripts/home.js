@@ -279,7 +279,7 @@ capsuleList.addEventListener("click", async (event) => {
 
 });
 
-// Open the locked capsule popup
+// Click on capsule logic
 capsuleList.addEventListener("click", function (event) {
 
     // Ignore clicks on the delete button
@@ -288,7 +288,10 @@ capsuleList.addEventListener("click", function (event) {
     }
 
     // Find the capsule that was clicked
-    const capsuleContent = event.target.closest(".card-body");
+    const cardBody = event.target.closest(".card-body");
+    const capsuleContent = cardBody.querySelector(".capsule-content");
+
+    console.log(capsuleContent);
 
     // If the click wasn't on a capsule, stop
     if (!capsuleContent) {
